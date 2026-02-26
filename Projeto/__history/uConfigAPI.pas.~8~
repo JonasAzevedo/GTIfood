@@ -1,0 +1,94 @@
+unit uConfigAPI;
+
+interface
+
+uses
+  System.SysUtils,
+  System.IniFiles;
+
+type
+  TApiType = (atMerchant, atGroceries);
+  TAuthorizationType = (ctCentralized, ctDistributed);
+
+  TConfigClient = record
+    ClientId: string;
+    ClientSecret: string;
+  end;
+
+  TConfigAPI = record
+  private
+    FArquivo: string;
+    procedure Carregar;
+    function StrToApiType(const AValue: string): TApiType;
+    function StrToAuthorizationType(const AValue: string): TAuthorizationType;
+  public
+    ApiType: TApiType;
+    AuthorizationType: TAuthorizationType;
+    SoftwareHouseId: string;
+    Centralizado: TConfigClient;
+    Distribuido: TConfigClient;
+
+    class function Abrir: TConfigAPI; static;
+  end;
+
+implementation
+
+{ TConfigAPI }
+
+procedure TConfigAPI.Carregar;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(FArquivo);
+  try
+    ApiType :=
+      StrToApiType(Ini.ReadString('APIType', 'Type', ''));
+
+    AuthorizationType :=
+      StrToAuthorizationType(
+        Ini.ReadString('APIType', 'AuthorizationType', '')
+      );
+
+    SoftwareHouseId :=
+      Ini.ReadString('SoftwareHouse', 'Id', '');
+
+    Centralizado.ClientId :=
+      Ini.ReadString('Centralizado', 'ClientId', '');
+
+    Centralizado.ClientSecret :=
+      Ini.ReadString('Centralizado', 'ClientSecret', '');
+
+    Distribuido.ClientId :=
+      Ini.ReadString('Distribuido', 'ClientId', '');
+
+    Distribuido.ClientSecret :=
+      Ini.ReadString('Distribuido', 'ClientSecret', '');
+  finally
+    Ini.Free;
+  end;
+end;
+
+class function TConfigAPI.Abrir: TConfigAPI;
+begin
+  Result.FArquivo := ExtractFilePath(ParamStr(0)) + 'config.ini';
+  Result.Carregar;
+end;
+
+function TConfigAPI.StrToApiType(const AValue: string): TApiType;
+begin
+  if SameText(AValue, 'atMerchant') then
+    Result := atMerchant
+  else if SameText(AValue, 'atGroceries') then
+    Result := atGroceries;
+end;
+
+function TConfigAPI.StrToAuthorizationType(
+  const AValue: string): TAuthorizationType;
+begin
+  if SameText(AValue, 'ctCentralized') then
+    Result := ctCentralized
+  else
+    Result := ctDistributed;
+end;
+
+end.

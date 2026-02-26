@@ -1,0 +1,25 @@
+object DM: TDM
+  Height = 750
+  Width = 1000
+  PixelsPerInch = 120
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'Database=C:\Jonas\GT IFood\Projeto\BD\estoque.fdb'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'Protocol=TCPIP'
+      'Server=127.0.0.1'
+      'Port=3050'
+      'DriverID=FB')
+    Connected = True
+    LoginPrompt = False
+    Left = 480
+    Top = 360
+  end
+  object FDPhysFBDriverLink: TFDPhysFBDriverLink
+    VendorHome = 'C:\Program Files (x86)\Firebird\Firebird_2_5\bin\'
+    VendorLib = 'fbclient.dll'
+    Left = 376
+    Top = 176
+  end
+end

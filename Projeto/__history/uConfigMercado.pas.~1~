@@ -1,0 +1,65 @@
+unit uConfigMercado;
+
+interface
+
+uses
+  System.SysUtils,
+  System.IniFiles;
+
+type
+  TConfigClient = record
+    ClientId: string;
+    ClientSecret: string;
+  end;
+
+  TConfigMercado = record
+  private
+    FArquivo: string;
+    procedure Carregar;
+  public
+    MercadoId: string;
+    Centralizado: TConfigClient;
+    Distribuido: TConfigClient;
+
+    class function Load(const ACaminho: string = ''): TConfigMercado; static;
+  end;
+
+implementation
+
+{ TConfigMercado }
+
+procedure TConfigMercado.Carregar;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(FArquivo);
+  try
+    MercadoId := Ini.ReadString('Mercado', 'Id', '');
+
+    Centralizado.ClientId :=
+      Ini.ReadString('Centralizado', 'ClientId', '');
+
+    Centralizado.ClientSecret :=
+      Ini.ReadString('Centralizado', 'ClientSecret', '');
+
+    Distribuido.ClientId :=
+      Ini.ReadString('Distribuido', 'ClientId', '');
+
+    Distribuido.ClientSecret :=
+      Ini.ReadString('Distribuido', 'ClientSecret', '');
+  finally
+    Ini.Free;
+  end;
+end;
+
+class function TConfigMercado.Load(const ACaminho: string): TConfigMercado;
+begin
+  if ACaminho = '' then
+    Result.FArquivo := ExtractFilePath(ParamStr(0)) + 'config.ini'
+  else
+    Result.FArquivo := ACaminho;
+
+  Result.Carregar;
+end;
+
+end.

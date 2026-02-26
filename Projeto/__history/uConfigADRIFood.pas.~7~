@@ -1,0 +1,63 @@
+unit uConfigADRIFood;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  uConfigAPI,
+   ADRIFood.Component;
+
+
+type
+  TConfigADRIFood = class
+  private
+    FConfig: TConfigAPI;
+  public
+    constructor Create;
+    procedure Configurar(ADRIFood: TADRIFood);
+  end;
+
+implementation
+
+uses
+  RTTI;
+
+{ TConfigADRIFood }
+
+constructor TConfigADRIFood.Create;
+begin
+  inherited Create;
+  FConfig := TConfigAPI.Abrir;
+end;
+
+procedure TConfigADRIFood.Configurar(ADRIFood: TADRIFood);
+begin
+  Aplicar(ADRIFood);
+
+  FConfig.SoftwareHouse.Id := FConfig.SoftwareHouseId;
+
+  if (FConfig.ApiType = atMerchant) then
+    ADRIFood.APIType := atMerchant
+  else   if (FConfig.ApiType = atGroceries) then
+    ADRIFood.APIType := atGroceries
+  else
+    raise Exception.Create('API Type não definido');
+
+  if (FConfig.AuthorizationType = ctCentralized) then
+  begin
+    ADRIFood.AuthorizationType := ctCentralized;
+    ADRIFood.Centralizada.ClientId := FConfig.Centralizado.ClientId;
+    ADRIFood.Centralizada.ClientSecret := FConfig.Centralizado.ClientSecret;
+  end
+  else if (FConfig.AuthorizationType = ctDistributed) then
+  begin
+    ADRIFood.AuthorizationType := ctDistributed;
+    ADRIFood.Distribuida.ClientId := FConfig.Distribuido.ClientId;
+    ADRIFood.Distribuida.ClientSecret := FConfig.Distribuido.ClientSecret;
+  end
+  else
+    raise Exception.Create('AuthorizationType não definido');
+end;
+
+end.

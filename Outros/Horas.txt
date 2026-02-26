@@ -1,0 +1,4 @@
+20/02/2025 = 2 horas - conversa com Adriano e início do projeto
+23/02/2025 = 2 horas - configurar componente ADRIFood, conectar BD (Firebird 2.5 win32)
+24/02/2025 = 2 horas - configurações, INI, testar componente
+25/02/2025 = 2 horas - comunicação com o componente, desenvolvimento

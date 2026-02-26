@@ -1,0 +1,99 @@
+unit uConfigAPI;
+
+interface
+
+uses
+  System.SysUtils,
+  System.IniFiles;
+
+type
+  TApiType = (atMerchant, atOther);
+  TAuthorizationType = (ctCentralized, ctDistributed);
+
+  TAuthConfig = record
+    ClientId: string;
+    ClientSecret: string;
+  end;
+
+  TConfigAPI = record
+  private
+    FArquivo: string;
+    procedure Carregar;
+    function StrToApiType(const AValue: string): TApiType;
+    function StrToAuthorizationType(const AValue: string): TAuthorizationType;
+  public
+    ApiType: TApiType;
+    AuthorizationType: TAuthorizationType;
+    SoftwareHouseId: string;
+
+    Centralizado: TAuthConfig;
+    Distribuido: TAuthConfig;
+
+    class function Load(const ACaminho: string = ''): TConfigAPI; static;
+  end;
+
+implementation
+
+{ TConfigAPI }
+
+procedure TConfigAPI.Carregar;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(FArquivo);
+  try
+    ApiType :=
+      StrToApiType(Ini.ReadString('APIType', 'Type', ''));
+
+    AuthorizationType :=
+      StrToAuthorizationType(
+        Ini.ReadString('APIType', 'AuthorizationType', '')
+      );
+
+    SoftwareHouseId :=
+      Ini.ReadString('SoftwareHouse', 'Id', '');
+
+    Centralizado.ClientId :=
+      Ini.ReadString('Centralizado', 'ClientId', '');
+
+    Centralizado.ClientSecret :=
+      Ini.ReadString('Centralizado', 'ClientSecret', '');
+
+    Distribuido.ClientId :=
+      Ini.ReadString('Distribuido', 'ClientId', '');
+
+    Distribuido.ClientSecret :=
+      Ini.ReadString('Distribuido', 'ClientSecret', '');
+  finally
+    Ini.Free;
+  end;
+end;
+
+class function TConfigAPI.Load(const ACaminho: string): TConfigAPI;
+begin
+  if ACaminho = '' then
+    Result.FArquivo := ExtractFilePath(ParamStr(0)) + 'config.ini'
+  else
+    Result.FArquivo := ACaminho;
+
+  Result.Carregar;
+end;
+
+function TConfigAPI.StrToApiType(const AValue: string): TApiType;
+begin
+  if SameText(AValue, 'atMerchant') then
+    Result := atMerchant
+  else
+    Result := atOther;
+end;
+
+function TConfigAPI.StrToAuthorizationType(
+  const AValue: string): TAuthorizationType;
+begin
+  if SameText(AValue, 'ctCentralized') then
+    Result := ctCentralized
+  else
+    Result := ctDistributed;
+end;
+
+end.

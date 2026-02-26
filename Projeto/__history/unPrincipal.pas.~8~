@@ -1,0 +1,68 @@
+unit unPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Generics.Collections,
+  ADRCompo.Helper.DataSet, ADRIFood.Component.Events, ADRIFood.Model.Interfaces,
+  ADRIFood.Model.Types, ADRIFood.Entity.Classes.CatalogV20,
+  ADRIFood.Entity.Classes.Events, ADRIFood.Entity.Classes.FinancialV30,
+  ADRIFood.Entity.Classes.Item, ADRIFood.Entity.Classes.LogisticsV10,
+  ADRIFood.Entity.Classes.Merchant, ADRIFood.Entity.Classes.Order,
+  ADRIFood.Entity.Classes.Order.VirtualBag, ADRIFood.Entity.Classes.Picking,
+  ADRIFood.Entity.Classes.Promotion, ADRIFood.Entity.Classes.Review,
+  ADRIFood.Entity.Classes.Shipping, ADRIFood.Component, unDM, Vcl.Buttons,
+  Vcl.StdCtrls;
+
+type
+  TfrmPrincipal = class(TForm)
+    ADRIFood: TADRIFood;
+    SpeedButton1: TSpeedButton;
+    btnListarMercado: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure btnListarMercadoClick(Sender: TObject);
+  private
+    procedure ConfigurarADRIFood;
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+uses
+  uConfigComponentes;
+
+{$R *.dfm}
+
+procedure TfrmPrincipal.btnListarMercadoClick(Sender: TObject);
+begin
+  // Carrega do IFood os Merchants que a credencial tem acesso.
+
+  ADRIFood.Credentials.Centralizada.ClientId := 'db07b1c6-fbc4-450f-ad7d-a6e82b182f77';
+  ADRIFood.MerchantV10.MerchantList.Execute(DataSetListMerchant);
+
+  // EXEMPLO: Setando o id do restaurante no componente
+  if DataSetListMerchant.RecordCount > 0 then
+    ADRIFood.MerchantID(DataSetListMerchant.FieldByName('Id').AsString);
+end;
+
+procedure TfrmPrincipal.ConfigurarADRIFood;
+var
+  LConfig: TConfigComponentes;
+begin
+  LConfig := TConfigComponentes.Create;
+  try
+    LConfig.Configurar(ADRIFood, DM.FDConnection);
+  finally
+    LConfig.Free;
+  end;
+end;
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+  ConfigurarADRIFood;
+end;
+
+end.

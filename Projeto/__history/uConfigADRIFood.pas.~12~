@@ -1,0 +1,68 @@
+unit uConfigADRIFood;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  uConfigAPI,
+  ADRCompo.Helper.DataSet, ADRIFood.Component.Events, ADRIFood.Model.Interfaces,
+  ADRIFood.Model.Types, ADRIFood.Entity.Classes.CatalogV20,
+  ADRIFood.Entity.Classes.Events, ADRIFood.Entity.Classes.FinancialV30,
+  ADRIFood.Entity.Classes.Item, ADRIFood.Entity.Classes.LogisticsV10,
+  ADRIFood.Entity.Classes.Merchant, ADRIFood.Entity.Classes.Order,
+  ADRIFood.Entity.Classes.Order.VirtualBag, ADRIFood.Entity.Classes.Picking,
+  ADRIFood.Entity.Classes.Promotion, ADRIFood.Entity.Classes.Review,
+  ADRIFood.Entity.Classes.Shipping, ADRIFood.Component;
+
+
+type
+  TConfigADRIFood = class
+  private
+    FConfig: TConfigAPI;
+  public
+    constructor Create;
+    procedure Configurar(ADRIFood: TADRIFood);
+  end;
+
+implementation
+
+uses
+  RTTI;
+
+{ TConfigADRIFood }
+
+constructor TConfigADRIFood.Create;
+begin
+  inherited Create;
+  FConfig := TConfigAPI.Abrir;
+end;
+
+procedure TConfigADRIFood.Configurar(ADRIFood: TADRIFood);
+begin
+  ADRIFood.SoftwareHouse.Id := FConfig.SoftwareHouseId;
+
+  if (FConfig.ApiType = TApiType.atMerchant) then
+    ADRIFood.APIType := TADRIFoodAPIType(atMerchant)
+  else if (FConfig.ApiType = TApiType.atGroceries) then
+    ADRIFood.APIType := TADRIFoodAPIType(atGroceries)
+  else
+    raise Exception.Create('API Type não definido');
+
+  if (FConfig.AuthorizationType = TAuthorizationType.ctCentralized) then
+  begin
+    ADRIFood.Credentials.AuthorizationType := TADRIFoodAuthorizationType(ctCentralized);
+    ADRIFood.Credentials.Centralizada.ClientId := FConfig.Centralizado.ClientId;
+    ADRIFood.Credentials.Centralizada.ClientSecret := FConfig.Centralizado.ClientSecret;
+  end
+  else if (FConfig.AuthorizationType = TAuthorizationType.ctDistributed) then
+  begin
+    ADRIFood.Credentials.AuthorizationType := TADRIFoodAuthorizationType(ctDistributed);
+    ADRIFood.Credentials.Distribuida.ClientId := FConfig.Distribuido.ClientId;
+    ADRIFood.Credentials.Distribuida.ClientSecret := FConfig.Distribuido.ClientSecret;
+  end
+  else
+    raise Exception.Create('AuthorizationType não definido');
+end;
+
+end.

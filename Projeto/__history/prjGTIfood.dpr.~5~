@@ -1,0 +1,18 @@
+program prjGTIfood;
+
+uses
+  Vcl.Forms,
+  unPrincipal in 'unPrincipal.pas' {frmPrincipal},
+  uConfigINI in 'uConfigINI.pas',
+  uConfigADRIFood in 'uConfigADRIFood.pas',
+  unDM in 'unDM.pas' {DataModule1: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TDataModule1, DataModule1);
+  Application.Run;
+end.

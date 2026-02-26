@@ -1,0 +1,52 @@
+unit unPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Generics.Collections,
+  ADRCompo.Helper.DataSet, ADRIFood.Component.Events, ADRIFood.Model.Interfaces,
+  ADRIFood.Model.Types, ADRIFood.Entity.Classes.CatalogV20,
+  ADRIFood.Entity.Classes.Events, ADRIFood.Entity.Classes.FinancialV30,
+  ADRIFood.Entity.Classes.Item, ADRIFood.Entity.Classes.LogisticsV10,
+  ADRIFood.Entity.Classes.Merchant, ADRIFood.Entity.Classes.Order,
+  ADRIFood.Entity.Classes.Order.VirtualBag, ADRIFood.Entity.Classes.Picking,
+  ADRIFood.Entity.Classes.Promotion, ADRIFood.Entity.Classes.Review,
+  ADRIFood.Entity.Classes.Shipping, ADRIFood.Component, unDM;
+
+type
+  TfrmPrincipal = class(TForm)
+    ADRIFood: TADRIFood;
+    procedure FormCreate(Sender: TObject);
+  private
+    procedure ConfigurarADRIFood;
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+uses
+  uConfigComponentes;
+
+{$R *.dfm}
+
+procedure TfrmPrincipal.ConfigurarADRIFood;
+var
+  LConfig: TConfigComponentes;
+begin
+  LConfig := TConfigComponentes.Create;
+  try
+    LConfig.Configurar(ADRIFood, DM.FDConnection);
+  finally
+    LConfig.Free;
+  end;
+end;
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+  ConfigurarADRIFood;
+end;
+
+end.

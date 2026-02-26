@@ -1,0 +1,30 @@
+============================
+Request ID: ListMerchants_20260225210925
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260225210925
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"0a848d4d-742f-480a-bf04-4cad7414f009","name":"Teste - EPGM E CIA INFORMATICA LTDA","corporateName":"Teste - EPGM E CIA INFORMATICA LTDA"}]
+============================
+============================
+Request ID: ListMerchants_20260225211930
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260225211930
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"0a848d4d-742f-480a-bf04-4cad7414f009","name":"Teste - EPGM E CIA INFORMATICA LTDA","corporateName":"Teste - EPGM E CIA INFORMATICA LTDA"}]
+============================
+============================
+Request ID: ListMerchants_20260225212938
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260225212938
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"0a848d4d-742f-480a-bf04-4cad7414f009","name":"Teste - EPGM E CIA INFORMATICA LTDA","corporateName":"Teste - EPGM E CIA INFORMATICA LTDA"}]
+============================
