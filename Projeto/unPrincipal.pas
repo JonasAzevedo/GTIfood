@@ -17,17 +17,20 @@ uses
 
 type
   TfrmPrincipal = class(TForm)
-    ADRIFood: TADRIFood;
     SpeedButton1: TSpeedButton;
     btnListarMercado: TButton;
     GridListMerchants: TDBGrid;
     btnInserirItem: TButton;
     Edit1: TEdit;
     Button1: TButton;
+    btnCategorias: TButton;
+    btnProdutos: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnListarMercadoClick(Sender: TObject);
     procedure btnInserirItemClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure btnCategoriasClick(Sender: TObject);
+    procedure btnProdutosClick(Sender: TObject);
   private
     procedure ConfigurarADRIFood;
   end;
@@ -38,7 +41,7 @@ var
 implementation
 
 uses
-  uConfigComponentes;
+  uConfigComponentes, unCategorias, unProdutos;
 
 {$R *.dfm}
 
@@ -53,7 +56,7 @@ var
 begin
   LConfig := TConfigComponentes.Create;
   try
-    LConfig.Configurar(ADRIFood, DM.FDConnection);
+    LConfig.Configurar(DM.ADRIFood, DM.FDConnection);
   finally
     LConfig.Free;
   end;
@@ -62,33 +65,58 @@ end;
 procedure TfrmPrincipal.btnListarMercadoClick(Sender: TObject);
 begin
   // Carrega do IFood os Merchants que a credencial tem acesso.
-  ADRIFood.MerchantV10.MerchantList.Execute(DM.DataSetListarMercado);
+  DM.ADRIFood.MerchantV10.MerchantList.Execute(DM.DataSetListarMercado);
 
   // EXEMPLO: Setando o id do restaurante no componente
   if DM.DataSetListarMercado.RecordCount > 0 then
-    ADRIFood.MerchantID(DM.DataSetListarMercado.FieldByName('Id').AsString);
+    DM.ADRIFood.MerchantID(DM.DataSetListarMercado.FieldByName('Id').AsString);
 end;
 
 procedure TfrmPrincipal.Button1Click(Sender: TObject);
 var
   id: string;
 begin
-  ADRIFood.Category.NewThis
+  DM.ADRIFood.Category.NewThis
     .name('Categoria 01')
     .externalCode('01')
     .available(True)
     .sequence(1);
 
-  id := ADRIFood.Category.Insert;
+  id := DM.ADRIFood.Category.Insert;
 
   Edit1.text := id;
 end;
+
+procedure TfrmPrincipal.btnCategoriasClick(Sender: TObject);
+var
+  frmCategorias: TfrmCategorias;
+begin
+  frmCategorias := TfrmCategorias.Create(nil);
+  try
+    frmCategorias.ShowModal;
+  finally
+    FreeAndNil(frmCategorias);
+  end;
+end;
+
+procedure TfrmPrincipal.btnProdutosClick(Sender: TObject);
+var
+  frmProdutos: TfrmProdutos;
+begin
+  frmProdutos := TfrmProdutos.Create(nil);
+  try
+    frmProdutos.ShowModal;
+  finally
+    FreeAndNil(frmProdutos);
+  end;
+end;
+
 
 procedure TfrmPrincipal.btnInserirItemClick(Sender: TObject);
 var
   id: string;
 begin
-  ADRIFood.ProductItem.NewThis
+  DM.ADRIFood.ProductItem.NewThis
     .id('01')
     .categoryId('01')
     .productId('01')
@@ -112,8 +140,9 @@ begin
     .alcoholicDrink(False)
     .natural(False);
 
-  id := ADRIFood.ProductItem.Insert;
+  id := DM.ADRIFood.ProductItem.Insert;
   Edit1.text := id;
 end;
 
 end.
+

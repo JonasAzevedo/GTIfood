@@ -5,7 +5,9 @@ uses
   unPrincipal in 'unPrincipal.pas' {frmPrincipal},
   uConfigINI in 'uConfigINI.pas',
   uConfigComponentes in 'uConfigComponentes.pas',
-  unDM in 'unDM.pas' {DM: TDataModule};
+  unDM in 'unDM.pas' {DM: TDataModule},
+  unProdutos in 'unProdutos.pas' {frmProdutos},
+  unCategorias in 'unCategorias.pas' {frmCategorias};
 
 {$R *.res}
 

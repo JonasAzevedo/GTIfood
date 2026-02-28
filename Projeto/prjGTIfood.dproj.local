@@ -3,8 +3,8 @@
 	<Transactions>
     <Transaction>2025/10/22 11:13:04.000.360,=C:\Users\jonas\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>2026/02/24 09:01:42.000.048,=C:\Users\jonas\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2026/02/24 09:02:18.000.887,C:\Users\jonas\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas=C:\Jonas\GT IFood\Projeto\unPrincipal.pas</Transaction>
     <Transaction>2026/02/24 09:02:18.000.887,C:\Users\jonas\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.dfm=C:\Jonas\GT IFood\Projeto\unPrincipal.dfm</Transaction>
+    <Transaction>2026/02/24 09:02:18.000.887,C:\Users\jonas\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas=C:\Jonas\GT IFood\Projeto\unPrincipal.pas</Transaction>
     <Transaction>2026/02/24 09:02:29.000.887,C:\Users\jonas\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.dproj=C:\Jonas\GT IFood\Projeto\prjGTIfood.dproj</Transaction>
     <Transaction>2026/02/24 14:14:25.000.655,=C:\Jonas\GT IFood\Projeto\Unit1.pas</Transaction>
     <Transaction>2026/02/24 14:15:49.000.079,C:\Jonas\GT IFood\Projeto\uConfigMercado.pas=C:\Jonas\GT IFood\Projeto\Unit1.pas</Transaction>
@@ -12,10 +12,16 @@
     <Transaction>2026/02/24 14:26:34.000.535,=C:\Jonas\GT IFood\Projeto\Unit1.pas</Transaction>
     <Transaction>2026/02/24 14:29:37.000.533,=C:\Jonas\GT IFood\Projeto\Unit2.pas</Transaction>
     <Transaction>2026/02/24 14:30:12.000.248,C:\Jonas\GT IFood\Projeto\Unit2.pas=C:\Jonas\GT IFood\Projeto\uConfigADRIFood.pas</Transaction>
-    <Transaction>2026/02/25 20:15:06.000,C:\Jonas\GT IFood\Projeto\uConfigINI.pas=C:\Jonas\GT IFood\Projeto\uConfigAPI.pas</Transaction>
-    <Transaction>2026/02/25 20:24:29.725,=C:\Jonas\GT IFood\Projeto\Unit1.pas</Transaction>
-    <Transaction>2026/02/25 20:25:32.726,C:\Jonas\GT IFood\Projeto\unDM.pas=C:\Jonas\GT IFood\Projeto\Unit1.pas</Transaction>
-    <Transaction>2026/02/25 20:25:32.726,C:\Jonas\GT IFood\Projeto\unDM.dfm=C:\Jonas\GT IFood\Projeto\Unit1.dfm</Transaction>
-    <Transaction>2026/02/25 20:46:26.793,C:\Jonas\GT IFood\Projeto\uConfigComponentes.pas=C:\Jonas\GT IFood\Projeto\uConfigADRIFood.pas</Transaction>
+    <Transaction>2026/02/25 20:15:06.000.000,C:\Jonas\GT IFood\Projeto\uConfigINI.pas=C:\Jonas\GT IFood\Projeto\uConfigAPI.pas</Transaction>
+    <Transaction>2026/02/25 20:24:29.000.725,=C:\Jonas\GT IFood\Projeto\Unit1.pas</Transaction>
+    <Transaction>2026/02/25 20:25:32.000.726,C:\Jonas\GT IFood\Projeto\unDM.pas=C:\Jonas\GT IFood\Projeto\Unit1.pas</Transaction>
+    <Transaction>2026/02/25 20:25:32.000.726,C:\Jonas\GT IFood\Projeto\unDM.dfm=C:\Jonas\GT IFood\Projeto\Unit1.dfm</Transaction>
+    <Transaction>2026/02/25 20:46:26.000.793,C:\Jonas\GT IFood\Projeto\uConfigComponentes.pas=C:\Jonas\GT IFood\Projeto\uConfigADRIFood.pas</Transaction>
+    <Transaction>2026/02/28 09:39:42.000.313,=C:\Jonas\GTIfood\Projeto\Unit1.pas</Transaction>
+    <Transaction>2026/02/28 09:39:56.000.684,C:\Jonas\GTIfood\Projeto\Unit1.pas=C:\Jonas\GTIfood\Projeto\unProdutos.pas</Transaction>
+    <Transaction>2026/02/28 09:39:56.000.684,C:\Jonas\GTIfood\Projeto\Unit1.dfm=C:\Jonas\GTIfood\Projeto\unProdutos.dfm</Transaction>
+    <Transaction>2026/02/28 09:50:10.359,=C:\Jonas\GTIfood\Projeto\Unit1.pas</Transaction>
+    <Transaction>2026/02/28 09:50:19.215,C:\Jonas\GTIfood\Projeto\unCategorias.dfm=C:\Jonas\GTIfood\Projeto\Unit1.dfm</Transaction>
+    <Transaction>2026/02/28 09:50:19.215,C:\Jonas\GTIfood\Projeto\unCategorias.pas=C:\Jonas\GTIfood\Projeto\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

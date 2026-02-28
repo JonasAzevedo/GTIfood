@@ -79,26 +79,29 @@ object frmPrincipal: TfrmPrincipal
   end
   object Button1: TButton
     Left = 408
-    Top = 368
+    Top = 376
     Width = 75
     Height = 25
     Caption = 'Button1'
     TabOrder = 4
     OnClick = Button1Click
   end
-  object ADRIFood: TADRIFood
-    APIType = atGroceries
-    Credentials.AuthorizationType = ctCentralized
-    Log.SalvarLog = True
-    SoftwareHouse.DiasAlerta = 30
-    Polling.AutoAck = True
-    Polling.AutoPolling = False
-    Polling.Interval = 30
-    Polling.InvokeEvents = True
-    MerchantStatus.AutoStatus = False
-    MerchantStatus.Interval = 30
-    Timeout = 60
-    Left = 256
-    Top = 40
+  object btnCategorias: TButton
+    Left = 360
+    Top = 24
+    Width = 75
+    Height = 25
+    Caption = 'Categorias'
+    TabOrder = 5
+    OnClick = btnCategoriasClick
+  end
+  object btnProdutos: TButton
+    Left = 360
+    Top = 72
+    Width = 75
+    Height = 25
+    Caption = 'Produtos'
+    TabOrder = 6
+    OnClick = btnProdutosClick
   end
 end
