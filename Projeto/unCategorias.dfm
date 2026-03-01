@@ -3,7 +3,7 @@ object frmCategorias: TfrmCategorias
   Top = 0
   Caption = 'Categorias'
   ClientHeight = 441
-  ClientWidth = 624
+  ClientWidth = 979
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,7 +16,7 @@ object frmCategorias: TfrmCategorias
   object grCategorias: TDBGrid
     Left = 0
     Top = 0
-    Width = 624
+    Width = 979
     Height = 185
     Align = alTop
     DataSource = dsCategorias
@@ -26,16 +26,47 @@ object frmCategorias: TfrmCategorias
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnCellClick = grCategoriasCellClick
+    OnColEnter = grCategoriasColEnter
+    OnDrawColumnCell = grCategoriasDrawColumnCell
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ENVIAR'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CODIGO'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESCRICAO'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CODIGO_INTEGRACAO'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'INTEGRADO'
+        Visible = True
+      end>
   end
   object pnlBotoes: TPanel
     Left = 0
     Top = 392
-    Width = 624
+    Width = 979
     Height = 49
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 384
+    ExplicitWidth = 622
     object btnEnviar: TButton
-      Left = 456
+      Left = 811
       Top = 1
       Width = 167
       Height = 47
@@ -43,6 +74,7 @@ object frmCategorias: TfrmCategorias
       Caption = 'Enviar'
       TabOrder = 0
       OnClick = btnEnviarClick
+      ExplicitLeft = 454
     end
   end
   object mmSaida: TMemo

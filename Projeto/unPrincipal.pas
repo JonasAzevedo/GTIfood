@@ -17,22 +17,18 @@ uses
 
 type
   TfrmPrincipal = class(TForm)
-    SpeedButton1: TSpeedButton;
-    btnListarMercado: TButton;
-    GridListMerchants: TDBGrid;
     btnInserirItem: TButton;
     Edit1: TEdit;
-    Button1: TButton;
     btnCategorias: TButton;
     btnProdutos: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure btnListarMercadoClick(Sender: TObject);
     procedure btnInserirItemClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure btnCategoriasClick(Sender: TObject);
     procedure btnProdutosClick(Sender: TObject);
   private
     procedure ConfigurarADRIFood;
+    procedure PegarCredencialIFood;
+    procedure HabilitarComponentes(const AValue: Boolean);
   end;
 
 var
@@ -47,7 +43,9 @@ uses
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+  HabilitarComponentes(False);
   ConfigurarADRIFood;
+  PegarCredencialIFood;
 end;
 
 procedure TfrmPrincipal.ConfigurarADRIFood;
@@ -62,29 +60,25 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.btnListarMercadoClick(Sender: TObject);
+procedure TfrmPrincipal.PegarCredencialIFood;
 begin
   // Carrega do IFood os Merchants que a credencial tem acesso.
   DM.ADRIFood.MerchantV10.MerchantList.Execute(DM.DataSetListarMercado);
 
-  // EXEMPLO: Setando o id do restaurante no componente
+  // Setando o id no componente
   if DM.DataSetListarMercado.RecordCount > 0 then
+  begin
     DM.ADRIFood.MerchantID(DM.DataSetListarMercado.FieldByName('Id').AsString);
+    HabilitarComponentes(True);
+  end
+  else
+    raise Exception.Create('Não foi possível pegar as credenciais do IFood');
 end;
 
-procedure TfrmPrincipal.Button1Click(Sender: TObject);
-var
-  id: string;
+procedure TfrmPrincipal.HabilitarComponentes(const AValue: Boolean);
 begin
-  DM.ADRIFood.Category.NewThis
-    .name('Categoria 01')
-    .externalCode('01')
-    .available(True)
-    .sequence(1);
-
-  id := DM.ADRIFood.Category.Insert;
-
-  Edit1.text := id;
+  btnCategorias.Enabled := AValue;
+  btnProdutos.Enabled := AValue;
 end;
 
 procedure TfrmPrincipal.btnCategoriasClick(Sender: TObject);

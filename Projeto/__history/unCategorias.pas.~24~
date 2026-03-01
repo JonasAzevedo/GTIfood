@@ -1,0 +1,134 @@
+unit unCategorias;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids, unDM,
+  Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TfrmCategorias = class(TForm)
+    grCategorias: TDBGrid;
+    dsCategorias: TDataSource;
+    pnlBotoes: TPanel;
+    btnEnviar: TButton;
+    mmSaida: TMemo;
+    procedure btnEnviarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure grCategoriasDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure grCategoriasColEnter(Sender: TObject);
+    procedure grCategoriasCellClick(Column: TColumn);
+  private
+    procedure EnviarCategoria;
+  end;
+
+
+implementation
+
+uses
+  System.StrUtils;
+
+{$R *.dfm}
+
+procedure TfrmCategorias.FormShow(Sender: TObject);
+begin
+  DM.qryCategorias.Close;
+  DM.qryCategorias.Open;
+end;
+
+procedure TfrmCategorias.EnviarCategoria;
+begin
+  try
+    DM.ADRIFood.Category.NewThis
+      .name(DM.qryCategorias.FieldByName('descricao').AsString)
+      .externalCode(DM.qryCategorias.FieldByName('codigo').AsString)
+      .available(True)
+      .sequence(1);
+
+
+    id := DM.ADRIFood.Category.Insert;
+    DM.InserirCategoria(DM.qryCategorias.FieldByName('codigo').AsString, id);
+
+    mmSaida.Lines.Add(id);
+  except
+    on E: Exception do
+    begin
+      mmSaida.Lines.Add('Erro ao inserir categoria ' +
+        DM.qryCategorias.FieldByName('codigo').AsString + ' -> ' + E.Message);
+    end;
+  end;
+end;
+
+procedure TfrmCategorias.btnEnviarClick(Sender: TObject);
+var
+  id: string;
+begin
+  if DM.qryCategorias.IsEmpty then
+    Exit;
+
+  DM.qryCategorias.First;
+  while not(DM.qryCategorias.Eof) do
+  begin
+    if (DM.qryCategorias.FieldByName('enviar').AsString = 'S') then
+      EnviarCategoria;
+
+
+    DM.qryCategorias.Next;
+  end;
+end;
+
+procedure TfrmCategorias.grCategoriasDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  lMarcar: word;
+  lRetangulo: TRect;
+begin
+  if MatchText(UpperCase(Column.FieldName), ['ENVIAR', 'INTEGRADO']) then
+  begin
+    grCategorias.Canvas.FillRect(Rect);
+
+    if Column.Field.AsString = 'S' then
+      lMarcar := DFCS_CHECKED
+    else
+      lMarcar := DFCS_BUTTONCHECK;
+
+    // ajusta o tamanho do CheckBox
+    lRetangulo := Rect;
+    InflateRect(lRetangulo, -2, -2);
+
+    // desenha o CheckBox conforme a condição acima
+    DrawFrameControl(grCategorias.Canvas.Handle, lRetangulo, DFC_BUTTON, lMarcar);
+  end;
+end;
+
+procedure TfrmCategorias.grCategoriasColEnter(Sender: TObject);
+begin
+  if MatchText(UpperCase(grCategorias.SelectedField.FieldName), ['ENVIAR', 'INTEGRADO']) then
+    grCategorias.Options := grCategorias.Options - [dgEditing]
+  else
+    grCategorias.Options := grCategorias.Options + [dgEditing];
+end;
+
+procedure TfrmCategorias.grCategoriasCellClick(Column: TColumn);
+var
+  lColuna: string;
+  lValorColunaAtivo: string;
+begin
+  if MatchText(UpperCase(Column.FieldName), ['ENVIAR', 'INTEGRADO']) then
+  begin
+    lColuna := Column.FieldName;
+
+    if DM.qryCategorias.FieldByName(lColuna).AsString = 'S' then
+      lValorColunaAtivo := 'N'
+    else
+      lValorColunaAtivo := 'S';
+
+    DM.qryCategorias.Edit;
+    DM.qryCategorias.FieldByName(lColuna).AsString := lValorColunaAtivo;
+    DM.qryCategorias.Post;
+  end;
+end;
+
+end.

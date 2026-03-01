@@ -1,0 +1,93 @@
+object frmPrincipal: TfrmPrincipal
+  Left = 0
+  Top = 0
+  Caption = 'GT Ifood'
+  ClientHeight = 441
+  ClientWidth = 624
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  TextHeight = 15
+  object btnListarMercado: TButton
+    Left = 40
+    Top = 72
+    Width = 75
+    Height = 25
+    Caption = 'Listar'
+    TabOrder = 0
+  end
+  object GridListMerchants: TDBGrid
+    Left = -8
+    Top = 164
+    Width = 624
+    Height = 152
+    DataSource = DM.dsListarMercado
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -12
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'Id'
+        Width = 300
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Name'
+        Width = 300
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CorporateName'
+        Width = 300
+        Visible = True
+      end>
+  end
+  object btnInserirItem: TButton
+    Left = 40
+    Top = 376
+    Width = 75
+    Height = 25
+    Caption = 'Inserir Item'
+    TabOrder = 2
+    OnClick = btnInserirItemClick
+  end
+  object Edit1: TEdit
+    Left = 144
+    Top = 377
+    Width = 121
+    Height = 23
+    TabOrder = 3
+    Text = 'Edit1'
+  end
+  object btnCategorias: TButton
+    Left = 360
+    Top = 24
+    Width = 75
+    Height = 25
+    Caption = 'Categorias'
+    Enabled = False
+    TabOrder = 4
+    OnClick = btnCategoriasClick
+  end
+  object btnProdutos: TButton
+    Left = 360
+    Top = 72
+    Width = 75
+    Height = 25
+    Caption = 'Produtos'
+    Enabled = False
+    TabOrder = 5
+    OnClick = btnProdutosClick
+  end
+end

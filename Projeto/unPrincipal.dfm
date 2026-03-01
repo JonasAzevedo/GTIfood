@@ -13,78 +13,22 @@ object frmPrincipal: TfrmPrincipal
   Position = poScreenCenter
   OnCreate = FormCreate
   TextHeight = 15
-  object SpeedButton1: TSpeedButton
-    Left = 280
-    Top = 136
-    Width = 23
-    Height = 22
-  end
-  object btnListarMercado: TButton
-    Left = 40
-    Top = 72
-    Width = 75
-    Height = 25
-    Caption = 'Listar'
-    TabOrder = 0
-    OnClick = btnListarMercadoClick
-  end
-  object GridListMerchants: TDBGrid
-    Left = -8
-    Top = 164
-    Width = 624
-    Height = 152
-    DataSource = DM.dsListarMercado
-    TabOrder = 1
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -12
-    TitleFont.Name = 'Segoe UI'
-    TitleFont.Style = []
-    Columns = <
-      item
-        Expanded = False
-        FieldName = 'Id'
-        Width = 300
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'Name'
-        Width = 300
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'CorporateName'
-        Width = 300
-        Visible = True
-      end>
-  end
   object btnInserirItem: TButton
-    Left = 40
-    Top = 376
+    Left = 296
+    Top = 360
     Width = 75
     Height = 25
     Caption = 'Inserir Item'
-    TabOrder = 2
+    TabOrder = 0
     OnClick = btnInserirItemClick
   end
   object Edit1: TEdit
-    Left = 144
-    Top = 377
+    Left = 400
+    Top = 361
     Width = 121
     Height = 23
-    TabOrder = 3
+    TabOrder = 1
     Text = 'Edit1'
-  end
-  object Button1: TButton
-    Left = 408
-    Top = 376
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 4
-    OnClick = Button1Click
   end
   object btnCategorias: TButton
     Left = 360
@@ -92,7 +36,8 @@ object frmPrincipal: TfrmPrincipal
     Width = 75
     Height = 25
     Caption = 'Categorias'
-    TabOrder = 5
+    Enabled = False
+    TabOrder = 2
     OnClick = btnCategoriasClick
   end
   object btnProdutos: TButton
@@ -101,7 +46,8 @@ object frmPrincipal: TfrmPrincipal
     Width = 75
     Height = 25
     Caption = 'Produtos'
-    TabOrder = 6
+    Enabled = False
+    TabOrder = 3
     OnClick = btnProdutosClick
   end
 end

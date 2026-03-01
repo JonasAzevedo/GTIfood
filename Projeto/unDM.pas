@@ -28,10 +28,21 @@ type
     qryProdutos: TFDQuery;
     qryCategorias: TFDQuery;
     ADRIFood: TADRIFood;
-  private
-    { Private declarations }
+    qryInsert: TFDQuery;
+    qryCategoriasCODIGO: TStringField;
+    qryCategoriasDESCRICAO: TStringField;
+    qryCategoriasCODIGO_INTEGRACAO: TStringField;
+    qryCategoriasINTEGRADO: TStringField;
+    qryCategoriasENVIAR: TStringField;
+    procedure ADRIFoodLogResponse(ARequestId, AContent: string;
+      AStatusCode: Integer; AUrl: string);
+    procedure qryCategoriasINTEGRADOGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure qryCategoriasENVIARGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
   public
-    { Public declarations }
+    function InserirCategoria(const ACategoria: string; const ACodigoIntegracao: string): Boolean;
+
   end;
 
 var
@@ -42,5 +53,59 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+{ TDM }
+
+procedure TDM.ADRIFoodLogResponse(ARequestId, AContent: string;
+  AStatusCode: Integer; AUrl: string);
+var
+  logFile: TStringList;
+  fileName: string;
+begin
+  logFile := TStringList.Create;
+  try
+    fileName := ExtractFilePath(GetModuleName(HInstance)) + 'IFood.log';
+    if FileExists(fileName) then
+      logFile.LoadFromFile(fileName);
+
+    logFile.Add('');
+    logFile.Add('Request ID: ' + ARequestId);
+    logFile.Add('Status Code: ' + AStatusCode.ToString);
+    logFile.Add('Content: ' + AContent);
+    logFile.Add('============================');
+
+    logFile.SaveToFile(fileName);
+  finally
+    logFile.Free;
+  end;
+end;
+
+function TDM.InserirCategoria(const ACategoria: string; const ACodigoIntegracao: string): Boolean;
+begin
+  try
+    qryInsert.Close;
+    qryInsert.SQL.Clear;
+    qryInsert.SQL.Add('INSERT INTO INTEGRACAO_CATEGORIA_IFOOD (grupo, codigo_integracao)');
+    qryInsert.SQL.Add('VALUES (:grupo, :codigo_integracao)');
+    qryInsert.ParamByName('grupo').AsString := ACategoria;
+    qryInsert.ParamByName('codigo_integracao').AsString := ACodigoIntegracao;
+    qryInsert.ExecSQL;
+    Result := True;
+  finally
+    qryInsert.Close;
+  end;
+end;
+
+procedure TDM.qryCategoriasENVIARGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  Text := EmptyStr;
+end;
+
+procedure TDM.qryCategoriasINTEGRADOGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  Text := EmptyStr;
+end;
 
 end.

@@ -13,14 +13,14 @@ object DM: TDM
       'DriverID=FB')
     Connected = True
     LoginPrompt = False
-    Left = 88
-    Top = 32
+    Left = 176
+    Top = 48
   end
   object FDPhysFBDriverLink: TFDPhysFBDriverLink
     VendorHome = 'C:\Program Files (x86)\Firebird\Firebird_2_5\bin\'
     VendorLib = 'fbclient.dll'
-    Left = 88
-    Top = 120
+    Left = 176
+    Top = 136
   end
   object DataSetListarMercado: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -77,19 +77,65 @@ object DM: TDM
       'FROM mercad M'
       'LEFT JOIN grupo G ON M.cdgrupo = G.cdgrupo'
       'LEFT JOIN subgrupo SG ON M.cdsgrup = SG.cdsgrupo')
-    Left = 112
-    Top = 256
+    Left = 72
+    Top = 264
   end
   object qryCategorias: TFDQuery
-    Active = True
+    CachedUpdates = True
     Connection = FDConnection
     SQL.Strings = (
       'SELECT'
+      ' '#39'N'#39' AS enviar,'
       '  G.cdgrupo AS codigo,'
-      '  G.descrgrupo AS descricao'
-      'FROM grupo G')
-    Left = 232
-    Top = 256
+      '  G.descrgrupo AS descricao,'
+      '  ICI.codigo_integracao,'
+      '  CASE'
+      '    WHEN ICI.codigo_integracao IS NULL THEN '#39'N'#39
+      '    ELSE '#39'S'#39
+      '  END AS integrado'
+      'FROM grupo G'
+      
+        'LEFT JOIN integracao_categoria_ifood ICI ON G.cdgrupo = ICI.grup' +
+        'o')
+    Left = 72
+    Top = 352
+    object qryCategoriasENVIAR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ENVIAR'
+      Origin = 'ENVIAR'
+      ProviderFlags = []
+      OnGetText = qryCategoriasENVIARGetText
+      FixedChar = True
+      Size = 1
+    end
+    object qryCategoriasCODIGO: TStringField
+      FieldName = 'CODIGO'
+      Origin = 'CDGRUPO'
+      Required = True
+      Size = 3
+    end
+    object qryCategoriasDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRGRUPO'
+      Size = 60
+    end
+    object qryCategoriasCODIGO_INTEGRACAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CODIGO_INTEGRACAO'
+      Origin = 'CODIGO_INTEGRACAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 50
+    end
+    object qryCategoriasINTEGRADO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'INTEGRADO'
+      Origin = 'INTEGRADO'
+      ProviderFlags = []
+      OnGetText = qryCategoriasINTEGRADOGetText
+      FixedChar = True
+      Size = 1
+    end
   end
   object ADRIFood: TADRIFood
     APIType = atGroceries
@@ -103,7 +149,19 @@ object DM: TDM
     MerchantStatus.AutoStatus = False
     MerchantStatus.Interval = 30
     Timeout = 60
-    Left = 208
-    Top = 24
+    OnLogResponse = ADRIFoodLogResponse
+    Left = 48
+    Top = 48
+  end
+  object qryInsert: TFDQuery
+    Active = True
+    Connection = FDConnection
+    SQL.Strings = (
+      'SELECT'
+      '  G.cdgrupo AS codigo,'
+      '  G.descrgrupo AS descricao'
+      'FROM grupo G')
+    Left = 352
+    Top = 264
   end
 end

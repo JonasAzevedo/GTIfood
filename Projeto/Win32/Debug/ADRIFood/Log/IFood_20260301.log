@@ -1,0 +1,66 @@
+============================
+Request ID: ListMerchants_20260301091551
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260301091551
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"0a848d4d-742f-480a-bf04-4cad7414f009","name":"Teste - EPGM E CIA INFORMATICA LTDA","corporateName":"Teste - EPGM E CIA INFORMATICA LTDA"}]
+============================
+============================
+Request ID: ListMerchants_20260301092802
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260301092802
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"0a848d4d-742f-480a-bf04-4cad7414f009","name":"Teste - EPGM E CIA INFORMATICA LTDA","corporateName":"Teste - EPGM E CIA INFORMATICA LTDA"}]
+============================
+============================
+Request ID: ListMerchants_20260301093022
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260301093022
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"0a848d4d-742f-480a-bf04-4cad7414f009","name":"Teste - EPGM E CIA INFORMATICA LTDA","corporateName":"Teste - EPGM E CIA INFORMATICA LTDA"}]
+============================
+============================
+Request ID: ListMerchants_20260301093828
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260301094122
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260301094220
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260301102613
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260301102646
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260301103729
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260301104036
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260301105346
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260301105452
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
