@@ -1,7 +1,7 @@
 object frmCategorias: TfrmCategorias
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   Caption = 'Categorias'
   ClientHeight = 399
   ClientWidth = 885

@@ -2,8 +2,8 @@
   Left = 0
   Top = 0
   Caption = 'GT Ifood'
-  ClientHeight = 473
-  ClientWidth = 505
+  ClientHeight = 426
+  ClientWidth = 503
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,8 +18,8 @@
   object grBxDadosMercado: TGroupBox
     Left = 0
     Top = 0
-    Width = 505
-    Height = 153
+    Width = 503
+    Height = 145
     Align = alTop
     Caption = 'Dados Mercado '
     Font.Charset = DEFAULT_CHARSET
@@ -29,7 +29,7 @@
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 503
+    ExplicitWidth = 988
     object lblTitMerchantName: TLabel
       Left = 20
       Top = 40
@@ -48,28 +48,28 @@
     end
     object lblTitMerchantId: TLabel
       Left = 20
-      Top = 80
+      Top = 70
       Width = 21
       Height = 28
       Caption = 'Id:'
     end
     object lblMerchantId: TLabel
       Left = 90
-      Top = 80
+      Top = 70
       Width = 122
       Height = 28
       Caption = 'lblMerchantId'
     end
     object lblTitStatus: TLabel
       Left = 20
-      Top = 120
+      Top = 100
       Width = 57
       Height = 28
       Caption = 'Status:'
     end
     object lblStatus: TLabel
       Left = 90
-      Top = 120
+      Top = 100
       Width = 75
       Height = 28
       Caption = 'lblStatus'
@@ -77,37 +77,40 @@
   end
   object grBxLog: TGroupBox
     Left = 0
-    Top = 153
-    Width = 505
-    Height = 320
+    Top = 145
+    Width = 503
+    Height = 281
     Align = alClient
     Caption = 'Log '
     TabOrder = 1
     Visible = False
-    ExplicitTop = 145
-    ExplicitWidth = 501
-    ExplicitHeight = 273
+    ExplicitTop = 231
+    ExplicitWidth = 990
+    ExplicitHeight = 250
     object pnlAtualizarLog: TPanel
       Left = 2
-      Top = 277
-      Width = 501
+      Top = 238
+      Width = 499
       Height = 41
       Align = alBottom
       Caption = 'Atualizar'
       TabOrder = 0
       OnClick = pnlAtualizarLogClick
-      ExplicitTop = 230
-      ExplicitWidth = 497
+      ExplicitLeft = 256
+      ExplicitTop = 160
+      ExplicitWidth = 185
     end
     object mmLog: TMemo
       Left = 2
       Top = 30
-      Width = 501
-      Height = 247
+      Width = 499
+      Height = 208
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 497
-      ExplicitHeight = 200
+      ExplicitLeft = 296
+      ExplicitTop = 72
+      ExplicitWidth = 185
+      ExplicitHeight = 89
     end
   end
   object TrayIcon: TTrayIcon

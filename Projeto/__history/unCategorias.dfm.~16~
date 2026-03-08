@@ -2,83 +2,90 @@ object frmCategorias: TfrmCategorias
   Left = 0
   Top = 0
   Caption = 'Categorias'
-  ClientHeight = 441
-  ClientWidth = 979
+  ClientHeight = 399
+  ClientWidth = 805
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
+  Font.Height = -20
   Font.Name = 'Segoe UI'
   Font.Style = []
+  FormStyle = fsMDIForm
   Position = poScreenCenter
   OnShow = FormShow
-  TextHeight = 15
+  TextHeight = 28
   object grCategorias: TDBGrid
     Left = 0
     Top = 0
-    Width = 979
-    Height = 185
-    Align = alTop
+    Width = 805
+    Height = 345
+    Align = alClient
     DataSource = dsCategorias
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
-    TitleFont.Height = -12
+    TitleFont.Height = -20
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnCellClick = grCategoriasCellClick
+    OnColEnter = grCategoriasColEnter
+    OnDrawColumnCell = grCategoriasDrawColumnCell
     Columns = <
       item
         Expanded = False
+        FieldName = 'ENVIAR'
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'CODIGO'
+        Width = 94
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'DESCRICAO'
+        Width = 306
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'CODIGO_INTEGRACAO'
+        Width = 259
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'INTEGRADO'
+        Width = 124
         Visible = True
       end>
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 392
-    Width = 979
-    Height = 49
+    Top = 345
+    Width = 805
+    Height = 54
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 384
-    ExplicitWidth = 622
+    ExplicitTop = 312
+    ExplicitWidth = 872
     object btnEnviar: TButton
-      Left = 811
+      Left = 637
       Top = 1
       Width = 167
-      Height = 47
+      Height = 52
       Align = alRight
       Caption = 'Enviar'
       TabOrder = 0
       OnClick = btnEnviarClick
-      ExplicitLeft = 454
+      ExplicitLeft = 552
+      ExplicitHeight = 47
     end
-  end
-  object mmSaida: TMemo
-    Left = 24
-    Top = 200
-    Width = 257
-    Height = 186
-    TabOrder = 2
   end
   object dsCategorias: TDataSource
     DataSet = DM.qryCategorias
-    Left = 344
-    Top = 56
+    Left = 72
+    Top = 72
   end
 end

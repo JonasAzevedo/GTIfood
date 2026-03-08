@@ -13,7 +13,6 @@ type
     dsCategorias: TDataSource;
     pnlBotoes: TPanel;
     btnEnviar: TButton;
-    mmSaida: TMemo;
     procedure btnEnviarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure grCategoriasDrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -21,6 +20,7 @@ type
     procedure grCategoriasColEnter(Sender: TObject);
     procedure grCategoriasCellClick(Column: TColumn);
   private
+    function EnviarCategoria: Boolean;
   end;
 
 
@@ -37,40 +37,56 @@ begin
   DM.qryCategorias.Open;
 end;
 
-procedure TfrmCategorias.btnEnviarClick(Sender: TObject);
+function TfrmCategorias.EnviarCategoria: Boolean
 var
   id: string;
+begin
+  try
+    DM.ADRIFood.Category.NewThis
+      .name(DM.qryCategorias.FieldByName('descricao').AsString)
+      .externalCode(DM.qryCategorias.FieldByName('codigo').AsString)
+      .available(True)
+      .sequence(1);
+
+    id := DM.ADRIFood.Category.Insert;
+    DM.InserirCategoria(DM.qryCategorias.FieldByName('codigo').AsString, id);
+  except
+    on E: Exception do
+    begin
+      raise;
+    end;
+  end;
+end;
+
+procedure TfrmCategorias.btnEnviarClick(Sender: TObject);
+var
+  lstJahIntegrados: TStringList;
 begin
   if DM.qryCategorias.IsEmpty then
     Exit;
 
-  DM.qryCategorias.First;
-  while not(DM.qryCategorias.Eof) do
-  begin
-    try
-      DM.ADRIFood.Category.NewThis
-        .name(DM.qryCategorias.FieldByName('descricao').AsString)
-        .externalCode(DM.qryCategorias.FieldByName('codigo').AsString)
-        .available(True)
-        .sequence(1);
+  lstJahIntegrados := TStringList.Create;
+  try
+    DM.qryCategorias.DisableControls;
+    DM.qryCategorias.First;
+    while not(DM.qryCategorias.Eof) do
+    begin
+      if (DM.qryCategorias.FieldByName('enviar').AsString = 'S') then
+      begin
+        if (DM.qryCategorias.FieldByName('integrado').AsString = 'N') then
+          EnviarCategoria
+        else
+          lstJahIntegrados.Add(DM.qryCategorias.FieldByName('codigo').AsString);
+      end;
 
-
-      id := DM.ADRIFood.Category.Insert;
-      DM.InserirCategoria(DM.qryCategorias.FieldByName('codigo').AsString, id);
-
-      mmSaida.Lines.Add(id);
-    except
-      on E: Exception do
-          begin
-            mmSaida.Lines.Add(
-              'Erro ao inserir categoria ' +
-              DM.qryCategorias.FieldByName('codigo').AsString +
-              ' -> ' + E.Message
-            );
-          end;
+      DM.qryCategorias.Next;
     end;
-
-    DM.qryCategorias.Next;
+  finally
+    DM.qryCategorias.First;
+    DM.qryCategorias.EnableControls;
+    if not(lstJahIntegrados.IsEmpty) then
+      MessageDlg('Itens já integrados: ' lstJahIntegrados.CommaText,
+        TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
   end;
 end;
 
@@ -80,7 +96,7 @@ var
   lMarcar: word;
   lRetangulo: TRect;
 begin
-  if MatchText(Column.FieldName, ['ENVIAR', 'INTEGRADO']) then
+  if MatchText(UpperCase(Column.FieldName), ['ENVIAR', 'INTEGRADO']) then
   begin
     grCategorias.Canvas.FillRect(Rect);
 
@@ -100,7 +116,7 @@ end;
 
 procedure TfrmCategorias.grCategoriasColEnter(Sender: TObject);
 begin
-  if MatchText( UpperCase(grCategorias.SelectedField.FieldName), ['ENVIAR', 'INTEGRADO']) then
+  if MatchText(UpperCase(grCategorias.SelectedField.FieldName), ['ENVIAR', 'INTEGRADO']) then
     grCategorias.Options := grCategorias.Options - [dgEditing]
   else
     grCategorias.Options := grCategorias.Options + [dgEditing];
@@ -108,17 +124,20 @@ end;
 
 procedure TfrmCategorias.grCategoriasCellClick(Column: TColumn);
 var
+  lColuna: string;
   lValorColunaAtivo: string;
 begin
-  if UpperCase(Column.FieldName) = 'INTEGRADO' then
+  if MatchText(UpperCase(Column.FieldName), ['ENVIAR', 'INTEGRADO']) then
   begin
-    if DM.qryCategorias.FieldByName('INTEGRADO').AsString = 'S' then
+    lColuna := Column.FieldName;
+
+    if DM.qryCategorias.FieldByName(lColuna).AsString = 'S' then
       lValorColunaAtivo := 'N'
     else
       lValorColunaAtivo := 'S';
 
     DM.qryCategorias.Edit;
-    DM.qryCategorias.FieldByName('INTEGRADO').AsString := lValorColunaAtivo;
+    DM.qryCategorias.FieldByName(lColuna).AsString := lValorColunaAtivo;
     DM.qryCategorias.Post;
   end;
 end;

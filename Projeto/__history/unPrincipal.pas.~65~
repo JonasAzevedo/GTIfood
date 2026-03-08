@@ -16,12 +16,11 @@ uses
   Vcl.StdCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.Menus,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ToolWin, Vcl.ActnMan,
+  Vcl.ActnCtrls, Vcl.ActnMenus;
 
 type
   TfrmPrincipal = class(TForm)
-    btnCategorias: TButton;
-    btnProdutos: TButton;
     TrayIcon: TTrayIcon;
     PopupMenu: TPopupMenu;
     mnItSair: TMenuItem;
@@ -32,16 +31,28 @@ type
     lblMerchantId: TLabel;
     lblTitStatus: TLabel;
     lblStatus: TLabel;
+    grBxLog: TGroupBox;
+    pnlAtualizarLog: TPanel;
+    mmLog: TMemo;
+    MainMenu: TMainMenu;
+    mnItOpçoes: TMenuItem;
+    mnItLog: TMenuItem;
+    mnItCadastros: TMenuItem;
+    mnItCategorias: TMenuItem;
+    mnItProdutos: TMenuItem;
     procedure FormCreate(Sender: TObject);
-    procedure btnCategoriasClick(Sender: TObject);
-    procedure btnProdutosClick(Sender: TObject);
     procedure TrayIconDblClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure mnItSairClick(Sender: TObject);
+    procedure pnlAtualizarLogClick(Sender: TObject);
+    procedure mnItLogClick(Sender: TObject);
+    procedure mnItCategoriasClick(Sender: TObject);
+    procedure mnItProdutosClick(Sender: TObject);
   private
     FFechar: Boolean;
     procedure ConfigurarADRIFood;
     procedure HabilitarComponentes(const AValue: Boolean);
+    procedure DefinirDadosMercado;
   end;
 
 var
@@ -63,7 +74,7 @@ begin
   HabilitarComponentes(False);
   ConfigurarADRIFood;
   DefinirDadosMercado;
-  HabilitarComponentes
+  HabilitarComponentes(DM.Status);
 end;
 
 procedure TfrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -79,16 +90,38 @@ begin
   Application.Terminate;
 end;
 
+procedure TfrmPrincipal.pnlAtualizarLogClick(Sender: TObject);
+var
+  lFileName: string;
+begin
+  lFileName := ExtractFilePath(GetModuleName(HInstance)) + 'IFood.log';
+
+  if FileExists(lFileName) then
+    mmLog.Lines.LoadFromFile(lFileName)
+  else
+    mmLog.Lines.Text := 'Log não encontrado.';
+end;
+
 procedure TfrmPrincipal.ConfigurarADRIFood;
 var
-  LConfig: TConfigComponentes;
+  lConfig: TConfigComponentes;
 begin
-  LConfig := TConfigComponentes.Create;
+  lConfig := TConfigComponentes.Create;
   try
-    LConfig.Configurar;
+    lConfig.Configurar;
   finally
-    LConfig.Free;
+    lConfig.Free;
   end;
+end;
+
+procedure TfrmPrincipal.DefinirDadosMercado;
+begin
+  lblMerchantName.Caption := DM.MerchantName;
+  lblMerchantId.Caption := DM.MerchantId;
+  if DM.Status then
+    lblStatus.Caption := 'Ok'
+  else
+    lblStatus.Caption := 'Erro';
 end;
 
 procedure TfrmPrincipal.TrayIconDblClick(Sender: TObject);
@@ -99,11 +132,17 @@ end;
 
 procedure TfrmPrincipal.HabilitarComponentes(const AValue: Boolean);
 begin
-  btnCategorias.Enabled := AValue;
-  btnProdutos.Enabled := AValue;
+  mnItCadastros.Enabled := AValue;
+  mnItCategorias.Enabled := AValue;
+  mnItProdutos.Enabled := AValue;
 end;
 
-procedure TfrmPrincipal.btnCategoriasClick(Sender: TObject);
+procedure TfrmPrincipal.mnItLogClick(Sender: TObject);
+begin
+  grBxLog.Visible := not(grBxLog.Visible);
+end;
+
+procedure TfrmPrincipal.mnItCategoriasClick(Sender: TObject);
 var
   frmCategorias: TfrmCategorias;
 begin
@@ -115,7 +154,7 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.btnProdutosClick(Sender: TObject);
+procedure TfrmPrincipal.mnItProdutosClick(Sender: TObject);
 var
   frmProdutos: TfrmProdutos;
 begin
@@ -126,7 +165,6 @@ begin
     FreeAndNil(frmProdutos);
   end;
 end;
-
 
 end.
 

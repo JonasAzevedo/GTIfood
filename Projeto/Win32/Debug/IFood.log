@@ -313,3 +313,28 @@ Request ID: ListMerchants_20260308144436
 Status Code: 200
 Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
 ============================
+
+Request ID: ListMerchants_20260308151153
+Status Code: 200
+Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
+============================
+
+Request ID: ListMerchants_20260308152336
+Status Code: 200
+Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
+============================
+
+Request ID: ListMerchants_20260308152919
+Status Code: 200
+Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
+============================
+
+Request ID: ListMerchants_20260308153105
+Status Code: 200
+Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
+============================
+
+Request ID: ListMerchants_20260308153249
+Status Code: 200
+Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
+============================

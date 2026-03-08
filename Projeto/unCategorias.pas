@@ -13,7 +13,6 @@ type
     dsCategorias: TDataSource;
     pnlBotoes: TPanel;
     btnEnviar: TButton;
-    mmSaida: TMemo;
     procedure btnEnviarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure grCategoriasDrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -21,14 +20,14 @@ type
     procedure grCategoriasColEnter(Sender: TObject);
     procedure grCategoriasCellClick(Column: TColumn);
   private
-    procedure EnviarCategoria;
+    function EnviarCategoria: Boolean;
   end;
 
 
 implementation
 
 uses
-  System.StrUtils;
+  System.StrUtils, System.UITypes;
 
 {$R *.dfm}
 
@@ -38,7 +37,7 @@ begin
   DM.qryCategorias.Open;
 end;
 
-procedure TfrmCategorias.EnviarCategoria;
+function TfrmCategorias.EnviarCategoria: Boolean;
 var
   id: string;
 begin
@@ -51,32 +50,56 @@ begin
 
     id := DM.ADRIFood.Category.Insert;
     DM.InserirCategoria(DM.qryCategorias.FieldByName('codigo').AsString, id);
-
-    mmSaida.Lines.Add(id);
+    Result := True;
   except
     on E: Exception do
     begin
-      mmSaida.Lines.Add('Erro ao inserir categoria ' +
-        DM.qryCategorias.FieldByName('codigo').AsString + ' -> ' + E.Message);
+      raise;
     end;
   end;
 end;
 
 procedure TfrmCategorias.btnEnviarClick(Sender: TObject);
+var
+  lstJahIntegrados: TStringList;
+  lstIntegrou: TStringList;
 begin
   if DM.qryCategorias.IsEmpty then
     Exit;
 
-  DM.qryCategorias.First;
-  while not(DM.qryCategorias.Eof) do
-  begin
-    if (DM.qryCategorias.FieldByName('integrado').AsString = 'N') then
+  lstJahIntegrados := TStringList.Create;
+  lstIntegrou := TStringList.Create;
+  try
+    DM.qryCategorias.DisableControls;
+    DM.qryCategorias.First;
+    while not(DM.qryCategorias.Eof) do
     begin
       if (DM.qryCategorias.FieldByName('enviar').AsString = 'S') then
-        EnviarCategoria;
-    end;
+      begin
+        if (DM.qryCategorias.FieldByName('integrado').AsString = 'N') then
+        begin
+          if EnviarCategoria then
+            lstIntegrou.Add(DM.qryCategorias.FieldByName('codigo').AsString);
+        end
+        else
+          lstJahIntegrados.Add(DM.qryCategorias.FieldByName('codigo').AsString);
+      end;
 
-    DM.qryCategorias.Next;
+      DM.qryCategorias.Next;
+    end;
+  finally
+    DM.qryCategorias.First;
+    DM.qryCategorias.EnableControls;
+    if not(lstJahIntegrados.IsEmpty) then
+      MessageDlg('Itens já integrados: ' + lstJahIntegrados.CommaText,
+        TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+
+    if not(lstIntegrou.IsEmpty) then
+      MessageDlg('Itens integrados: ' + lstIntegrou.CommaText,
+        TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+
+    FreeAndNil(lstJahIntegrados);
+    FreeAndNil(lstIntegrou);
   end;
 end;
 
