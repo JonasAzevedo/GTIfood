@@ -25,17 +25,18 @@ type
   TConfigComponentes = class
   private
     FConfig: TConfigINI;
-    procedure ConfigurarADRIFood(ADRIFood: TADRIFood);
-    procedure ConfigurarConnection(AConnection: TFDConnection);
+    procedure ConfigurarADRIFood;
+    procedure ConfigurarConnection;
+    procedure ValidarAutenticacao;
   public
     constructor Create;
-    procedure Configurar(ADRIFood: TADRIFood; AConnection: TFDConnection);
+    procedure Configurar;
   end;
 
 implementation
 
 uses
-  RTTI;
+  RTTI, unDM;
 
 { TConfigComponentes }
 
@@ -45,57 +46,73 @@ begin
   FConfig := TConfigINI.Abrir;
 end;
 
-procedure TConfigComponentes.Configurar(ADRIFood: TADRIFood; AConnection: TFDConnection);
+procedure TConfigComponentes.Configurar;
 begin
-  ConfigurarADRIFood(ADRIFood);
-  ConfigurarConnection(AConnection);
+  ConfigurarADRIFood;
+  ValidarAutenticacao;
+  ConfigurarConnection;
 end;
 
-procedure TConfigComponentes.ConfigurarADRIFood(ADRIFood: TADRIFood);
+procedure TConfigComponentes.ConfigurarADRIFood;
 begin
-  ADRIFood.SoftwareHouse.Id := FConfig.SoftwareHouseId;
+  DM.ADRIFood.SoftwareHouse.Id := FConfig.SoftwareHouseId;
 
   if (FConfig.ApiType = TApiType.atMerchant) then
-    ADRIFood.APIType := TADRIFoodAPIType(atMerchant)
+    DM.ADRIFood.APIType := TADRIFoodAPIType(atMerchant)
   else if (FConfig.ApiType = TApiType.atGroceries) then
-    ADRIFood.APIType := TADRIFoodAPIType(atGroceries)
+    DM.ADRIFood.APIType := TADRIFoodAPIType(atGroceries)
   else
     raise Exception.Create('API Type não definido');
 
   if (FConfig.AuthorizationType = TAuthorizationType.ctCentralized) then
   begin
-    ADRIFood.Credentials.AuthorizationType := TADRIFoodAuthorizationType(ctCentralized);
-    ADRIFood.Credentials.Centralizada.ClientId := FConfig.Centralizado.ClientId;
-    ADRIFood.Credentials.Centralizada.ClientSecret := FConfig.Centralizado.ClientSecret;
+    DM.ADRIFood.Credentials.AuthorizationType := TADRIFoodAuthorizationType(ctCentralized);
+    DM.ADRIFood.Credentials.Centralizada.ClientId := FConfig.Centralizado.ClientId;
+    DM.ADRIFood.Credentials.Centralizada.ClientSecret := FConfig.Centralizado.ClientSecret;
   end
   else if (FConfig.AuthorizationType = TAuthorizationType.ctDistributed) then
   begin
-    ADRIFood.Credentials.AuthorizationType := TADRIFoodAuthorizationType(ctDistributed);
-    ADRIFood.Credentials.Distribuida.ClientId := FConfig.Distribuido.ClientId;
-    ADRIFood.Credentials.Distribuida.ClientSecret := FConfig.Distribuido.ClientSecret;
+    DM.ADRIFood.Credentials.AuthorizationType := TADRIFoodAuthorizationType(ctDistributed);
+    DM.ADRIFood.Credentials.Distribuida.ClientId := FConfig.Distribuido.ClientId;
+    DM.ADRIFood.Credentials.Distribuida.ClientSecret := FConfig.Distribuido.ClientSecret;
   end
   else
     raise Exception.Create('AuthorizationType não definido');
 end;
 
-procedure TConfigComponentes.ConfigurarConnection(AConnection: TFDConnection);
+procedure TConfigComponentes.ConfigurarConnection;
 begin
   try
-    AConnection.Close;
-    AConnection.Params.Clear;
-    AConnection.Params.DriverID := FConfig.Banco.DriverID;
-    AConnection.Params.Values['Server'] := FConfig.Banco.Server;
-    AConnection.Params.Values['Database'] := FConfig.Banco.Database;
-    AConnection.Params.Values['User_Name'] := FConfig.Banco.User_Name;
-    AConnection.Params.Values['Password'] := FConfig.Banco.Password;
-    AConnection.Params.Values['Port'] := FConfig.Banco.Port.ToString;
-    AConnection.LoginPrompt := False;
-    AConnection.Connected := True;
+    DM.FDConnection.Close;
+    DM.FDConnection.Params.Clear;
+    DM.FDConnection.Params.DriverID := FConfig.Banco.DriverID;
+    DM.FDConnection.Params.Values['Server'] := FConfig.Banco.Server;
+    DM.FDConnection.Params.Values['Database'] := FConfig.Banco.Database;
+    DM.FDConnection.Params.Values['User_Name'] := FConfig.Banco.User_Name;
+    DM.FDConnection.Params.Values['Password'] := FConfig.Banco.Password;
+    DM.FDConnection.Params.Values['Port'] := FConfig.Banco.Port.ToString;
+    DM.FDConnection.LoginPrompt := False;
+    DM.FDConnection.Connected := True;
   except
     on E: Exception do
     begin
       raise Exception.Create('Erro ao conectar ao Banco de Dados ' + E.Message);
     end;
+  end;
+end;
+
+procedure TConfigComponentes.ValidarAutenticacao;
+begin
+  try
+    DM.ADRIFood.MerchantV10.MerchantList.Execute(DM.DataSetListarMercado);
+    if DM.DataSetListarMercado.isEmpty then
+      Exit;
+
+    DM.MerchantId := DM.DataSetListarMercado.FieldByName('Id').AsString;
+    DM.MerchantName := DM.DataSetListarMercado.FieldByName('Name').AsString;
+  except
+    DM.MerchantId := EmptyStr;
+    DM.MerchantName := EmptyStr;
   end;
 end;
 

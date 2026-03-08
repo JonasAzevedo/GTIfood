@@ -2,8 +2,8 @@ object frmCategorias: TfrmCategorias
   Left = 0
   Top = 0
   Caption = 'Categorias'
-  ClientHeight = 441
-  ClientWidth = 979
+  ClientHeight = 433
+  ClientWidth = 977
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,7 +16,7 @@ object frmCategorias: TfrmCategorias
   object grCategorias: TDBGrid
     Left = 0
     Top = 0
-    Width = 979
+    Width = 977
     Height = 185
     Align = alTop
     DataSource = dsCategorias
@@ -58,13 +58,11 @@ object frmCategorias: TfrmCategorias
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 392
-    Width = 979
+    Top = 384
+    Width = 977
     Height = 49
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 384
-    ExplicitWidth = 622
     object btnEnviar: TButton
       Left = 811
       Top = 1
@@ -74,7 +72,7 @@ object frmCategorias: TfrmCategorias
       Caption = 'Enviar'
       TabOrder = 0
       OnClick = btnEnviarClick
-      ExplicitLeft = 454
+      ExplicitLeft = 809
     end
   end
   object mmSaida: TMemo

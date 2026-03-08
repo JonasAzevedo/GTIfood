@@ -1,0 +1,56 @@
+============================
+Request ID: ListMerchants_20260303105514
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260303105606
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ItemV10PostItemIntegration_20260303105610
+URL: https://merchant-api.ifood.com.br/item/v1.0/ingestion/0a848d4d-742f-480a-bf04-4cad7414f009?reset=false
+Content: [{"barcode":"99999","name":"DIVERSOS","plu":"1","active":true,"details":{"categorization":{"department":"1","category":"edCategoria","subCategory":"1"},"brand":"1","volume":"1","unit":"1","imageUrl":"1","description":"","nearExpiration":false},"prices":{"price":1.0},"inventory":{"stock":1.0},"multiple":{"originalEan":"1","quantity":1},"channels":["ifood-app"]}]
+============================
+Request ID: ListMerchants_20260303105645
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ItemV10PostItemIntegration_20260303105804
+URL: https://merchant-api.ifood.com.br/item/v1.0/ingestion/0a848d4d-742f-480a-bf04-4cad7414f009?reset=false
+Content: [{"barcode":"99999","name":"DIVERSOS","plu":"1","active":true,"details":{"categorization":{"department":"1","category":"edCategoria","subCategory":"1"},"brand":"1","volume":"1","unit":"1","imageUrl":"1","description":"","nearExpiration":false},"prices":{"price":1.0},"inventory":{"stock":1.0},"multiple":{"originalEan":"1","quantity":1},"channels":["ifood-app"]}]
+============================
+Request ID: ListMerchants_20260303105939
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ItemV10PostItemIntegration_20260303110001
+URL: https://merchant-api.ifood.com.br/item/v1.0/ingestion/0a848d4d-742f-480a-bf04-4cad7414f009?reset=false
+Content: [{"barcode":"99999","name":"DIVERSOS","plu":"1","active":true,"details":{"categorization":{"department":"1","category":"edCategoria","subCategory":"1"},"brand":"1","volume":"1","unit":"1","imageUrl":"1","description":"","nearExpiration":false},"prices":{"price":1.0},"inventory":{"stock":1.0},"multiple":{"originalEan":"1","quantity":1},"channels":["ifood-app"]}]
+============================
+Request ID: ListMerchants_20260303162000
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260303162109
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260303171449
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260303171542
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260303171650
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260303172216
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260303172237
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 

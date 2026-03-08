@@ -1,0 +1,64 @@
+============================
+Request ID: ListMerchants_20260304203752
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260304210504
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260304210504
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
+============================
+============================
+Request ID: ListMerchants_20260304210617
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260304210617
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
+============================
+============================
+Request ID: ItemV10PostItemIntegration_20260304210624
+URL: https://merchant-api.ifood.com.br/item/v1.0/ingestion/EdtItemMerchantId?reset=false
+Content: [{"barcode":"99999","name":"DIVERSOS","plu":"1","active":true,"details":{"categorization":{"department":"1","category":"edCategoria","subCategory":"1"},"brand":"1","volume":"1","unit":"1","imageUrl":"1","description":"","nearExpiration":false},"prices":{"price":1.0},"inventory":{"stock":1.0},"multiple":{"originalEan":"1","quantity":1},"channels":["ifood-app"]}]
+
+Request ID: ItemV10PostItemIntegration_20260304210624
+URL: https://merchant-api.ifood.com.br/item/v1.0/ingestion/EdtItemMerchantId?reset=false
+Status Code: 404
+Content: {"message":"no Route matched with those values"}
+============================
+============================
+Request ID: ListMerchants_20260304210814
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260304210814
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
+============================
+============================
+Request ID: ListMerchants_20260304210817
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+
+Request ID: ListMerchants_20260304210817
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Status Code: 200
+Content: [{"id":"9211a726-cdaa-43b6-b14a-1e892e830d58","name":"Teste - jonas-da-silva-azeve","corporateName":"Teste - jonas-da-silva-azeve"}]
+============================
+============================
+Request ID: ItemV10PostItemIntegration_20260304210830
+URL: https://merchant-api.ifood.com.br/item/v1.0/ingestion/EdtItemMerchantId?reset=false
+Content: [{"barcode":"99999","name":"DIVERSOS","plu":"1","active":true,"details":{"categorization":{"department":"1","category":"edCategoria","subCategory":"1"},"brand":"1","volume":"1","unit":"1","imageUrl":"1","description":"","nearExpiration":false},"prices":{"price":1.0},"inventory":{"stock":1.0},"multiple":{"originalEan":"1","quantity":1},"channels":["ifood-app"]}]
+
+Request ID: ItemV10PostItemIntegration_20260304210830
+URL: https://merchant-api.ifood.com.br/item/v1.0/ingestion/EdtItemMerchantId?reset=false
+Status Code: 404
+Content: {"message":"no Route matched with those values"}
+============================

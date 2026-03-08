@@ -27,22 +27,32 @@ type
     dsListarMercado: TDataSource;
     qryProdutos: TFDQuery;
     qryCategorias: TFDQuery;
-    ADRIFood: TADRIFood;
+    ADRIFood_old: TADRIFood;
     qryInsert: TFDQuery;
     qryCategoriasCODIGO: TStringField;
     qryCategoriasDESCRICAO: TStringField;
     qryCategoriasCODIGO_INTEGRACAO: TStringField;
     qryCategoriasINTEGRADO: TStringField;
     qryCategoriasENVIAR: TStringField;
-    procedure ADRIFoodLogResponse(ARequestId, AContent: string;
-      AStatusCode: Integer; AUrl: string);
+    ADRIFood: TADRIFood;
     procedure qryCategoriasINTEGRADOGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
     procedure qryCategoriasENVIARGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
+    function ADRIFoodRefreshTokenGet: string;
+    procedure ADRIFoodRefreshTokenSave(ARefreshToken: string);
+    procedure DataModuleCreate(Sender: TObject);
+    procedure ADRIFoodLogResponse(ARequestId, AContent: string;
+      AStatusCode: Integer; AUrl: string);
+  private
+    FMerchantId: string;
+    FMerchantName: string;
+    function GetStatus: Boolean;
   public
+    property MerchantId: string read FMerchantId write FMerchantId;
+    property MerchantName: string read FMerchantName write FMerchantName;
+    property Status: Boolean read GetStatus;
     function InserirCategoria(const ACategoria: string; const ACodigoIntegracao: string): Boolean;
-
   end;
 
 var
@@ -50,11 +60,62 @@ var
 
 implementation
 
+uses
+  System.IniFiles;
+
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
 
 { TDM }
+
+procedure TDM.DataModuleCreate(Sender: TObject);
+begin
+  FMerchantId := EmptyStr;
+  FMerchantName := EmptyStr;
+end;
+
+function TDM.GetStatus: Boolean;
+begin
+  Result := (FMerchantId <> EmptyStr);
+end;
+
+function TDM.ADRIFoodRefreshTokenGet: string;
+var
+  LIniFile: TIniFile;
+  LIniFileName: string;
+begin
+  LIniFileName := ExtractFilePath(GetModuleName(HInstance)) + 'IFoodToken.ini';
+  // O token de autenticação do IFood tem validade de 3 horas, por isso o componente
+  // precisa renovar essa autenticação, para que ele possa fazer esse processo, aqui
+  // você deve retornar o último RefreshToken salvo pelo evento OnRefreshTokenSave
+  LIniFile := TIniFile.Create(LIniFileName);
+  try
+    Result := LIniFile.ReadString('Auth', 'RefreshToken', EmptyStr);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+procedure TDM.ADRIFoodRefreshTokenSave(ARefreshToken: string);
+var
+  LIniFile: TIniFile;
+  LIniFileName: string;
+begin
+  LIniFileName := ExtractFilePath(GetModuleName(HInstance)) + 'IFoodToken.ini';
+  // Sempre que o componente gerar um novo token no IFood, irá invocar esse evento para que o
+  // RefreshToken seja salvo, como exemplo estamos salvando aqui num arquivo ini na maquina
+  // Você pode salvar da maneira que for melhor na sua realidade, como no próprio banco de dados...
+  // Se for salvar em arquivo local, precisa ter o cuidado de ter 2 máquinas usando, pois uma máquina
+  // vai invalidar o token da outra. Por isso é importante salvar essa informação num lugar único
+  // onde todas as máquinas consigam recuperar a mesma informação.
+  LIniFile := TIniFile.Create(LIniFileName);
+  try
+    LIniFile.WriteString('Auth', 'RefreshToken', ARefreshToken);
+  finally
+    LIniFile.Free;
+  end;
+end;
 
 procedure TDM.ADRIFoodLogResponse(ARequestId, AContent: string;
   AStatusCode: Integer; AUrl: string);

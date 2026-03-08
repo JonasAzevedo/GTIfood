@@ -13,22 +13,46 @@ uses
   ADRIFood.Entity.Classes.Order.VirtualBag, ADRIFood.Entity.Classes.Picking,
   ADRIFood.Entity.Classes.Promotion, ADRIFood.Entity.Classes.Review,
   ADRIFood.Entity.Classes.Shipping, ADRIFood.Component, unDM, Vcl.Buttons,
-  Vcl.StdCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids;
+  Vcl.StdCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.Menus,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ToolWin, Vcl.ActnMan,
+  Vcl.ActnCtrls, Vcl.ActnMenus;
 
 type
   TfrmPrincipal = class(TForm)
-    btnInserirItem: TButton;
-    Edit1: TEdit;
-    btnCategorias: TButton;
-    btnProdutos: TButton;
+    TrayIcon: TTrayIcon;
+    PopupMenu: TPopupMenu;
+    mnItSair: TMenuItem;
+    grBxDadosMercado: TGroupBox;
+    lblTitMerchantName: TLabel;
+    lblMerchantName: TLabel;
+    lblTitMerchantId: TLabel;
+    lblMerchantId: TLabel;
+    lblTitStatus: TLabel;
+    lblStatus: TLabel;
+    grBxLog: TGroupBox;
+    pnlAtualizarLog: TPanel;
+    mmLog: TMemo;
+    MainMenu: TMainMenu;
+    mnItOpçoes: TMenuItem;
+    mnItLog: TMenuItem;
+    mnItCadastros: TMenuItem;
+    mnItCategorias: TMenuItem;
+    mnItProdutos: TMenuItem;
     procedure FormCreate(Sender: TObject);
-    procedure btnInserirItemClick(Sender: TObject);
-    procedure btnCategoriasClick(Sender: TObject);
-    procedure btnProdutosClick(Sender: TObject);
+    procedure TrayIconDblClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure mnItSairClick(Sender: TObject);
+    procedure pnlAtualizarLogClick(Sender: TObject);
+    procedure mnItLogClick(Sender: TObject);
+    procedure mnItCategoriasClick(Sender: TObject);
+    procedure mnItProdutosClick(Sender: TObject);
   private
+    FFechar: Boolean;
     procedure ConfigurarADRIFood;
-    procedure PegarCredencialIFood;
     procedure HabilitarComponentes(const AValue: Boolean);
+    procedure DefinirDadosMercado;
   end;
 
 var
@@ -43,45 +67,82 @@ uses
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+  Application.ShowMainForm := False;
+  FFechar := False;
+  Self.Hide;
+
   HabilitarComponentes(False);
   ConfigurarADRIFood;
-  PegarCredencialIFood;
+  DefinirDadosMercado;
+  HabilitarComponentes(DM.Status);
+end;
+
+procedure TfrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := FFechar;
+  if not FFechar then
+    Hide;
+end;
+
+procedure TfrmPrincipal.mnItSairClick(Sender: TObject);
+begin
+  FFechar := True;
+  Application.Terminate;
+end;
+
+procedure TfrmPrincipal.pnlAtualizarLogClick(Sender: TObject);
+var
+  lFileName: string;
+begin
+  lFileName := ExtractFilePath(GetModuleName(HInstance)) + 'IFood.log';
+
+  if FileExists(lFileName) then
+    mmLog.Lines.LoadFromFile(lFileName)
+  else
+    mmLog.Lines.Text := 'Log não encontrado.';
 end;
 
 procedure TfrmPrincipal.ConfigurarADRIFood;
 var
-  LConfig: TConfigComponentes;
+  lConfig: TConfigComponentes;
 begin
-  LConfig := TConfigComponentes.Create;
+  lConfig := TConfigComponentes.Create;
   try
-    LConfig.Configurar(DM.ADRIFood, DM.FDConnection);
+    lConfig.Configurar;
   finally
-    LConfig.Free;
+    lConfig.Free;
   end;
 end;
 
-procedure TfrmPrincipal.PegarCredencialIFood;
+procedure TfrmPrincipal.DefinirDadosMercado;
 begin
-  // Carrega do IFood os Merchants que a credencial tem acesso.
-  DM.ADRIFood.MerchantV10.MerchantList.Execute(DM.DataSetListarMercado);
-
-  // Setando o id no componente
-  if DM.DataSetListarMercado.RecordCount > 0 then
-  begin
-    DM.ADRIFood.MerchantID(DM.DataSetListarMercado.FieldByName('Id').AsString);
-    HabilitarComponentes(True);
-  end
+  lblMerchantName.Caption := DM.MerchantName;
+  lblMerchantId.Caption := DM.MerchantId;
+  if DM.Status then
+    lblStatus.Caption := 'Ok'
   else
-    raise Exception.Create('Não foi possível pegar as credenciais do IFood');
+    lblStatus.Caption := 'Erro';
+end;
+
+procedure TfrmPrincipal.TrayIconDblClick(Sender: TObject);
+begin
+  Show;
+  WindowState := wsNormal;
 end;
 
 procedure TfrmPrincipal.HabilitarComponentes(const AValue: Boolean);
 begin
-  btnCategorias.Enabled := AValue;
-  btnProdutos.Enabled := AValue;
+  mnItCadastros.Enabled := AValue;
+  mnItCategorias.Enabled := AValue;
+  mnItProdutos.Enabled := AValue;
 end;
 
-procedure TfrmPrincipal.btnCategoriasClick(Sender: TObject);
+procedure TfrmPrincipal.mnItLogClick(Sender: TObject);
+begin
+  grBxLog.Visible := not(grBxLog.Visible);
+end;
+
+procedure TfrmPrincipal.mnItCategoriasClick(Sender: TObject);
 var
   frmCategorias: TfrmCategorias;
 begin
@@ -93,7 +154,7 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.btnProdutosClick(Sender: TObject);
+procedure TfrmPrincipal.mnItProdutosClick(Sender: TObject);
 var
   frmProdutos: TfrmProdutos;
 begin
@@ -103,39 +164,6 @@ begin
   finally
     FreeAndNil(frmProdutos);
   end;
-end;
-
-
-procedure TfrmPrincipal.btnInserirItemClick(Sender: TObject);
-var
-  id: string;
-begin
-  DM.ADRIFood.ProductItem.NewThis
-    .id('01')
-    .categoryId('01')
-    .productId('01')
-    .name('Teste 01')
-    .description('Desc Teste 01')
-    .externalCode('01')
-//    .imagePath(edtItemImageURL.Text)
-//    .image(imgItem.Picture)
-    .sequence(0)
-    .serving(0)
-    .originalValue(10)
-    .value(10)
-    .ean('01')
-    .available(False)
-    .vegetarian(False)
-    .vegan(False)
-    .organic(True)
-    .glutenFree(False)
-    .sugarFree(False)
-    .lacFree(False)
-    .alcoholicDrink(False)
-    .natural(False);
-
-  id := DM.ADRIFood.ProductItem.Insert;
-  Edit1.text := id;
 end;
 
 end.

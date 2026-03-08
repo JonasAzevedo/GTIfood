@@ -1,0 +1,139 @@
+object frmProdutos: TfrmProdutos
+  Left = 0
+  Top = 0
+  Caption = 'Produtos'
+  ClientHeight = 575
+  ClientWidth = 1216
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  TextHeight = 15
+  object grProdutos: TDBGrid
+    Left = 0
+    Top = 0
+    Width = 1216
+    Height = 265
+    Align = alTop
+    DataSource = dsProdutos
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -12
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'CODIGO'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESCRICAO'
+        Width = 200
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'STATUS'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'STATUS_DESC'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'TIPOPRODUTO'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'TIPOPRODUTO_DESC'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CODIGO_GRUPO'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'GRUPO_DESC'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CODIGO_SUBGRUPO'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SUBGRUPO_DESC'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRECO_CUSTO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRVENDA_IFOOD'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRODUTO_PARA_VENDA'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PESO_PRODUTO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SKU'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESCRICAO_COMPLETA_PRODUTO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DATA_ULTIMA_ATUALIZACAO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESTAQUE'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESTAQUE_DESC'
+        Visible = True
+      end>
+  end
+  object dsProdutos: TDataSource
+    DataSet = DM.qryProdutos
+    Left = 112
+    Top = 336
+  end
+end

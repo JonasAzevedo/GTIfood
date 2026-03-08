@@ -1,0 +1,84 @@
+unit unProdutos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids, unDM,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls;
+
+type
+  TfrmProdutos = class(TForm)
+    grProdutos: TDBGrid;
+    dsProdutos: TDataSource;
+    DataSetItens: TFDMemTable;
+    Button1: TButton;
+    edCategoria: TEdit;
+    Button2: TButton;
+    EdtItemMerchantId: TEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    procedure AdicionarItensEnvio;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmProdutos.AdicionarItensEnvio;
+begin
+  DataSetItens.Append;
+  DataSetItens.FieldByName('Barcode').AsString := '99999';
+  DataSetItens.FieldByName('Name').AsString := DM.qryProdutos.FieldByName('DESCRICAO').AsString;
+  DataSetItens.FieldByName('DetailsDescription').AsString := DM.qryProdutos.FieldByName('DESCRICAO_COMPLETA_PRODUTO').AsString;
+  DataSetItens.FieldByName('Plu').AsString := '1';
+  DataSetItens.FieldByName('DetailsVolume').AsString := '1';
+  DataSetItens.FieldByName('DetailsUnit').AsString := '1';
+  DataSetItens.FieldByName('DetailsCategorizationDepartment').AsString := '1';
+  DataSetItens.FieldByName('DetailsCategorizationCategory').AsString := edCategoria.Text;
+  DataSetItens.FieldByName('DetailsCategorizationSubCategory').AsString := '1';
+  DataSetItens.FieldByName('DetailsBrand').AsString := '1';
+  DataSetItens.FieldByName('InventoryStock').AsString := '1';
+  DataSetItens.FieldByName('PricesPrice').AsString := '1';
+  DataSetItens.FieldByName('MultipleQuantity').AsString := '1';
+  DataSetItens.FieldByName('DetailsImageUrl').AsString := '1';
+  DataSetItens.FieldByName('MultipleOriginalEan').AsString := '1';
+  DataSetItens.FieldByName('Active').AsBoolean := True;
+  DataSetItens.FieldByName('ChannelIFoodApp').AsBoolean := True;
+  DataSetItens.FieldByName('ChannelIFoodShop').AsBoolean := False;
+  DataSetItens.FieldByName('DetailsNearExpiration').AsBoolean := False;
+  DataSetItens.FieldByName('ChannelWhitelabel').AsBoolean := False;
+  DataSetItens.Post;
+end;
+
+procedure TfrmProdutos.Button1Click(Sender: TObject);
+begin
+  AdicionarItensEnvio;
+end;
+
+procedure TfrmProdutos.FormCreate(Sender: TObject);
+begin
+  DM.ADRIFood.ItemV10.DataSet.ProductIngestion.CreateDataSet(DataSetItens);
+end;
+
+procedure TfrmProdutos.FormShow(Sender: TObject);
+begin
+  DM.qryProdutos.Close;
+  DM.qryProdutos.Open;
+end;
+
+procedure TfrmProdutos.Button2Click(Sender: TObject);
+begin
+  DM.ADRIFood.ItemV10.PostItemIntegration
+      .MerchantId(EdtItemMerchantId.Text)
+    .Execute(DataSetItens, False);
+
+  ShowMessage('Produtos Enviados.');
+end;
+
+end.

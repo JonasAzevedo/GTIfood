@@ -1,0 +1,140 @@
+unit unPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Generics.Collections,
+  ADRCompo.Helper.DataSet, ADRIFood.Component.Events, ADRIFood.Model.Interfaces,
+  ADRIFood.Model.Types, ADRIFood.Entity.Classes.CatalogV20,
+  ADRIFood.Entity.Classes.Events, ADRIFood.Entity.Classes.FinancialV30,
+  ADRIFood.Entity.Classes.Item, ADRIFood.Entity.Classes.LogisticsV10,
+  ADRIFood.Entity.Classes.Merchant, ADRIFood.Entity.Classes.Order,
+  ADRIFood.Entity.Classes.Order.VirtualBag, ADRIFood.Entity.Classes.Picking,
+  ADRIFood.Entity.Classes.Promotion, ADRIFood.Entity.Classes.Review,
+  ADRIFood.Entity.Classes.Shipping, ADRIFood.Component, unDM, Vcl.Buttons,
+  Vcl.StdCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.Menus,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+
+type
+  TfrmPrincipal = class(TForm)
+    btnCategorias: TButton;
+    btnProdutos: TButton;
+    TrayIcon: TTrayIcon;
+    PopupMenu: TPopupMenu;
+    mnItSair: TMenuItem;
+    grBxDadosMercado: TGroupBox;
+    lblTitMerchantName: TLabel;
+    lblMerchantName: TLabel;
+    lblTitMerchantId: TLabel;
+    lblMerchantId: TLabel;
+    lblTitStatus: TLabel;
+    lblStatus: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure btnCategoriasClick(Sender: TObject);
+    procedure btnProdutosClick(Sender: TObject);
+    procedure TrayIconDblClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure mnItSairClick(Sender: TObject);
+  private
+    FFechar: Boolean;
+    procedure ConfigurarADRIFood;
+    procedure HabilitarComponentes(const AValue: Boolean);
+    procedure DefinirDadosMercado;
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+uses
+  uConfigComponentes, unCategorias, unProdutos;
+
+{$R *.dfm}
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+  Application.ShowMainForm := False;
+  FFechar := False;
+  Self.Hide;
+
+  HabilitarComponentes(False);
+  ConfigurarADRIFood;
+  DefinirDadosMercado;
+  HabilitarComponentes(DM.Status);
+end;
+
+procedure TfrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := FFechar;
+  if not FFechar then
+    Hide;
+end;
+
+procedure TfrmPrincipal.mnItSairClick(Sender: TObject);
+begin
+  FFechar := True;
+  Application.Terminate;
+end;
+
+procedure TfrmPrincipal.ConfigurarADRIFood;
+var
+  LConfig: TConfigComponentes;
+begin
+  LConfig := TConfigComponentes.Create;
+  try
+    LConfig.Configurar;
+  finally
+    LConfig.Free;
+  end;
+end;
+
+procedure TfrmPrincipal.DefinirDadosMercado;
+begin
+  lblMerchantName.Caption := DM.MerchantName;
+  lblMerchantId.Caption := DM.MerchantId;
+  lblStatus.Caption := DM.Status.ToString;
+end;
+
+procedure TfrmPrincipal.TrayIconDblClick(Sender: TObject);
+begin
+  Show;
+  WindowState := wsNormal;
+end;
+
+procedure TfrmPrincipal.HabilitarComponentes(const AValue: Boolean);
+begin
+  btnCategorias.Enabled := AValue;
+  btnProdutos.Enabled := AValue;
+end;
+
+procedure TfrmPrincipal.btnCategoriasClick(Sender: TObject);
+var
+  frmCategorias: TfrmCategorias;
+begin
+  frmCategorias := TfrmCategorias.Create(nil);
+  try
+    frmCategorias.ShowModal;
+  finally
+    FreeAndNil(frmCategorias);
+  end;
+end;
+
+procedure TfrmPrincipal.btnProdutosClick(Sender: TObject);
+var
+  frmProdutos: TfrmProdutos;
+begin
+  frmProdutos := TfrmProdutos.Create(nil);
+  try
+    frmProdutos.ShowModal;
+  finally
+    FreeAndNil(frmProdutos);
+  end;
+end;
+
+
+end.
+
