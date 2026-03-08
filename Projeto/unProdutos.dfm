@@ -1,36 +1,53 @@
 object frmProdutos: TfrmProdutos
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Produtos'
   ClientHeight = 575
   ClientWidth = 1216
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
+  Font.Height = -20
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
   OnCreate = FormCreate
   OnShow = FormShow
-  TextHeight = 15
+  TextHeight = 28
   object grProdutos: TDBGrid
     Left = 0
     Top = 0
     Width = 1216
-    Height = 265
-    Align = alTop
+    Height = 521
+    Align = alClient
     DataSource = dsProdutos
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
-    TitleFont.Height = -12
+    TitleFont.Height = -20
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnCellClick = grProdutosCellClick
+    OnColEnter = grProdutosColEnter
+    OnDrawColumnCell = grProdutosDrawColumnCell
     Columns = <
       item
         Expanded = False
+        FieldName = 'ENVIAR'
+        Width = 89
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'INTEGRADO'
+        Width = 119
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'CODIGO'
+        Width = 77
         Visible = True
       end
       item
@@ -42,21 +59,25 @@ object frmProdutos: TfrmProdutos
       item
         Expanded = False
         FieldName = 'STATUS'
+        Width = 83
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'STATUS_DESC'
+        Width = 89
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'TIPOPRODUTO'
+        Width = 160
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'TIPOPRODUTO_DESC'
+        Width = 159
         Visible = True
       end
       item
@@ -73,6 +94,7 @@ object frmProdutos: TfrmProdutos
       item
         Expanded = False
         FieldName = 'CODIGO_SUBGRUPO'
+        Width = 64
         Visible = True
       end
       item
@@ -108,6 +130,7 @@ object frmProdutos: TfrmProdutos
       item
         Expanded = False
         FieldName = 'SKU'
+        Width = 64
         Visible = True
       end
       item
@@ -125,52 +148,41 @@ object frmProdutos: TfrmProdutos
       item
         Expanded = False
         FieldName = 'DESTAQUE'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'DESTAQUE_DESC'
+        Width = 64
         Visible = True
       end>
   end
-  object Button1: TButton
-    Left = 104
-    Top = 288
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
+  object pnlBotoes: TPanel
+    Left = 0
+    Top = 521
+    Width = 1216
+    Height = 54
+    Align = alBottom
     TabOrder = 1
-    OnClick = Button1Click
-  end
-  object edCategoria: TEdit
-    Left = 248
-    Top = 440
-    Width = 425
-    Height = 23
-    TabOrder = 2
-    Text = 'edCategoria'
-  end
-  object Button2: TButton
-    Left = 912
-    Top = 344
-    Width = 75
-    Height = 25
-    Caption = 'Enviar'
-    TabOrder = 3
-    OnClick = Button2Click
-  end
-  object EdtItemMerchantId: TEdit
-    Left = 280
-    Top = 504
-    Width = 569
-    Height = 23
-    TabOrder = 4
-    Text = 'EdtItemMerchantId'
+    ExplicitTop = 337
+    ExplicitWidth = 883
+    object btnEnviar: TButton
+      Left = 1048
+      Top = 1
+      Width = 167
+      Height = 52
+      Align = alRight
+      Caption = 'Enviar'
+      TabOrder = 0
+      OnClick = btnEnviarClick
+      ExplicitLeft = 1049
+    end
   end
   object dsProdutos: TDataSource
     DataSet = DM.qryProdutos
     Left = 112
-    Top = 336
+    Top = 88
   end
   object DataSetItens: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -180,7 +192,7 @@ object frmProdutos: TfrmProdutos
     UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
-    Left = 400
-    Top = 320
+    Left = 112
+    Top = 152
   end
 end

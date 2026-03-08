@@ -5,3 +5,6 @@
 28/02/2025 = 2 horas - Formulários, sql e categorias
 01/03/2025 = 2 horas - Integração categoria, salvar no BD
 04/03/2025 = 2 horas - Cadastro de itens
+08/03/2025 = 6 horas - Melhoria nas telas, tela principal, logs, cadastros
+
+20 horas

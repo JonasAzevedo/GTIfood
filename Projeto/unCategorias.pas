@@ -74,7 +74,7 @@ begin
     DM.qryCategorias.First;
     while not(DM.qryCategorias.Eof) do
     begin
-      if (DM.qryCategorias.FieldByName('enviar').AsString = 'S') then
+      if   (DM.qryCategorias.FieldByName('enviar').AsString = 'S') then
       begin
         if (DM.qryCategorias.FieldByName('integrado').AsString = 'N') then
         begin
@@ -89,13 +89,14 @@ begin
     end;
   finally
     DM.qryCategorias.First;
+
     DM.qryCategorias.EnableControls;
     if not(lstJahIntegrados.IsEmpty) then
-      MessageDlg('Itens já integrados: ' + lstJahIntegrados.CommaText,
+      MessageDlg('Categorias já integrados: ' + lstJahIntegrados.CommaText,
         TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
 
     if not(lstIntegrou.IsEmpty) then
-      MessageDlg('Itens integrados: ' + lstIntegrou.CommaText,
+      MessageDlg('Categorias integrados: ' + lstIntegrou.CommaText,
         TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
 
     FreeAndNil(lstJahIntegrados);

@@ -38,6 +38,12 @@ object frmCategorias: TfrmCategorias
       end
       item
         Expanded = False
+        FieldName = 'INTEGRADO'
+        Width = 124
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'CODIGO'
         Width = 94
         Visible = True
@@ -53,12 +59,6 @@ object frmCategorias: TfrmCategorias
         FieldName = 'CODIGO_INTEGRACAO'
         Width = 259
         Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'INTEGRADO'
-        Width = 124
-        Visible = True
       end>
   end
   object pnlBotoes: TPanel
@@ -69,7 +69,7 @@ object frmCategorias: TfrmCategorias
     Align = alBottom
     TabOrder = 1
     ExplicitTop = 337
-    ExplicitWidth = 803
+    ExplicitWidth = 883
     object btnEnviar: TButton
       Left = 717
       Top = 1
@@ -79,7 +79,7 @@ object frmCategorias: TfrmCategorias
       Caption = 'Enviar'
       TabOrder = 0
       OnClick = btnEnviarClick
-      ExplicitLeft = 635
+      ExplicitLeft = 715
     end
   end
   object dsCategorias: TDataSource

@@ -84,9 +84,8 @@
     Caption = 'Log '
     TabOrder = 1
     Visible = False
-    ExplicitTop = 145
-    ExplicitWidth = 501
-    ExplicitHeight = 273
+    ExplicitWidth = 503
+    ExplicitHeight = 312
     object pnlAtualizarLog: TPanel
       Left = 2
       Top = 277
@@ -96,8 +95,8 @@
       Caption = 'Atualizar'
       TabOrder = 0
       OnClick = pnlAtualizarLogClick
-      ExplicitTop = 230
-      ExplicitWidth = 497
+      ExplicitTop = 269
+      ExplicitWidth = 499
     end
     object mmLog: TMemo
       Left = 2
@@ -105,9 +104,8 @@
       Width = 501
       Height = 247
       Align = alClient
+      ScrollBars = ssVertical
       TabOrder = 1
-      ExplicitWidth = 497
-      ExplicitHeight = 200
     end
   end
   object TrayIcon: TTrayIcon

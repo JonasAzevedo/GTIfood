@@ -1,0 +1,171 @@
+unit unDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB,
+  FireDAC.Phys.FBDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Phys.IBBase, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet, FireDAC.DApt, Datasnap.DBClient,
+  System.Generics.Collections, ADRCompo.Helper.DataSet,
+  ADRIFood.Component.Events, ADRIFood.Model.Interfaces, ADRIFood.Model.Types,
+  ADRIFood.Entity.Classes.CatalogV20, ADRIFood.Entity.Classes.Events,
+  ADRIFood.Entity.Classes.FinancialV30, ADRIFood.Entity.Classes.Item,
+  ADRIFood.Entity.Classes.LogisticsV10, ADRIFood.Entity.Classes.Merchant,
+  ADRIFood.Entity.Classes.Order, ADRIFood.Entity.Classes.Order.VirtualBag,
+  ADRIFood.Entity.Classes.Picking, ADRIFood.Entity.Classes.Promotion,
+  ADRIFood.Entity.Classes.Review, ADRIFood.Entity.Classes.Shipping,
+  ADRIFood.Component;
+
+type
+  TDM = class(TDataModule)
+    FDConnection: TFDConnection;
+    FDPhysFBDriverLink: TFDPhysFBDriverLink;
+    DataSetListarMercado: TFDMemTable;
+    dsListarMercado: TDataSource;
+    qryProdutos: TFDQuery;
+    qryCategorias: TFDQuery;
+    qryInsert: TFDQuery;
+    qryCategoriasCODIGO: TStringField;
+    qryCategoriasDESCRICAO: TStringField;
+    qryCategoriasCODIGO_INTEGRACAO: TStringField;
+    qryCategoriasINTEGRADO: TStringField;
+    qryCategoriasENVIAR: TStringField;
+    ADRIFood: TADRIFood;
+    procedure qryCategoriasINTEGRADOGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure qryCategoriasENVIARGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    function ADRIFoodRefreshTokenGet: string;
+    procedure ADRIFoodRefreshTokenSave(ARefreshToken: string);
+    procedure DataModuleCreate(Sender: TObject);
+    procedure ADRIFoodLogResponse(ARequestId, AContent: string;
+      AStatusCode: Integer; AUrl: string);
+  private
+    FMerchantId: string;
+    FMerchantName: string;
+    function GetStatus: Boolean;
+  public
+    property MerchantId: string read FMerchantId write FMerchantId;
+    property MerchantName: string read FMerchantName write FMerchantName;
+    property Status: Boolean read GetStatus;
+    function InserirCategoria(const ACategoria: string; const ACodigoIntegracao: string): Boolean;
+  end;
+
+var
+  DM: TDM;
+
+implementation
+
+uses
+  System.IniFiles;
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TDM }
+
+procedure TDM.DataModuleCreate(Sender: TObject);
+begin
+  FMerchantId := EmptyStr;
+  FMerchantName := EmptyStr;
+end;
+
+function TDM.GetStatus: Boolean;
+begin
+  Result := (FMerchantId <> EmptyStr);
+end;
+
+function TDM.ADRIFoodRefreshTokenGet: string;
+var
+  LIniFile: TIniFile;
+  LIniFileName: string;
+begin
+  LIniFileName := ExtractFilePath(GetModuleName(HInstance)) + 'IFoodToken.ini';
+  // O token de autenticação do IFood tem validade de 3 horas, por isso o componente
+  // precisa renovar essa autenticação, para que ele possa fazer esse processo, aqui
+  // você deve retornar o último RefreshToken salvo pelo evento OnRefreshTokenSave
+  LIniFile := TIniFile.Create(LIniFileName);
+  try
+    Result := LIniFile.ReadString('Auth', 'RefreshToken', EmptyStr);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+procedure TDM.ADRIFoodRefreshTokenSave(ARefreshToken: string);
+var
+  LIniFile: TIniFile;
+  LIniFileName: string;
+begin
+  LIniFileName := ExtractFilePath(GetModuleName(HInstance)) + 'IFoodToken.ini';
+  // Sempre que o componente gerar um novo token no IFood, irá invocar esse evento para que o
+  // RefreshToken seja salvo, como exemplo estamos salvando aqui num arquivo ini na maquina
+  // Você pode salvar da maneira que for melhor na sua realidade, como no próprio banco de dados...
+  // Se for salvar em arquivo local, precisa ter o cuidado de ter 2 máquinas usando, pois uma máquina
+  // vai invalidar o token da outra. Por isso é importante salvar essa informação num lugar único
+  // onde todas as máquinas consigam recuperar a mesma informação.
+  LIniFile := TIniFile.Create(LIniFileName);
+  try
+    LIniFile.WriteString('Auth', 'RefreshToken', ARefreshToken);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+procedure TDM.ADRIFoodLogResponse(ARequestId, AContent: string;
+  AStatusCode: Integer; AUrl: string);
+var
+  logFile: TStringList;
+  fileName: string;
+begin
+  logFile := TStringList.Create;
+  try
+    fileName := ExtractFilePath(GetModuleName(HInstance)) + 'IFood.log';
+    if FileExists(fileName) then
+      logFile.LoadFromFile(fileName);
+
+    logFile.Add('');
+    logFile.Add('Request ID: ' + ARequestId);
+    logFile.Add('Status Code: ' + AStatusCode.ToString);
+    logFile.Add('Content: ' + AContent);
+    logFile.Add('============================');
+
+    logFile.SaveToFile(fileName);
+  finally
+    logFile.Free;
+  end;
+end;
+
+function TDM.InserirCategoria(const ACategoria: string; const ACodigoIntegracao: string): Boolean;
+begin
+  try
+    qryInsert.Close;
+    qryInsert.SQL.Clear;
+    qryInsert.SQL.Add('INSERT INTO INTEGRACAO_CATEGORIA_IFOOD (grupo, codigo_integracao)');
+    qryInsert.SQL.Add('VALUES (:grupo, :codigo_integracao)');
+    qryInsert.ParamByName('grupo').AsString := ACategoria;
+    qryInsert.ParamByName('codigo_integracao').AsString := ACodigoIntegracao;
+    qryInsert.ExecSQL;
+    Result := True;
+  finally
+    qryInsert.Close;
+  end;
+end;
+
+procedure TDM.qryCategoriasENVIARGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  Text := EmptyStr;
+end;
+
+procedure TDM.qryCategoriasINTEGRADOGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  Text := EmptyStr;
+end;
+
+end.

@@ -1,0 +1,88 @@
+object frmCategorias: TfrmCategorias
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Categorias'
+  ClientHeight = 391
+  ClientWidth = 883
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -20
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  OnShow = FormShow
+  TextHeight = 28
+  object grCategorias: TDBGrid
+    Left = 0
+    Top = 0
+    Width = 883
+    Height = 337
+    Align = alClient
+    DataSource = dsCategorias
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -20
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    OnCellClick = grCategoriasCellClick
+    OnColEnter = grCategoriasColEnter
+    OnDrawColumnCell = grCategoriasDrawColumnCell
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ENVIAR'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CODIGO'
+        Width = 94
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESCRICAO'
+        Width = 306
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CODIGO_INTEGRACAO'
+        Width = 259
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'INTEGRADO'
+        Width = 124
+        Visible = True
+      end>
+  end
+  object pnlBotoes: TPanel
+    Left = 0
+    Top = 337
+    Width = 883
+    Height = 54
+    Align = alBottom
+    TabOrder = 1
+    object btnEnviar: TButton
+      Left = 717
+      Top = 1
+      Width = 167
+      Height = 52
+      Align = alRight
+      Caption = 'Enviar'
+      TabOrder = 0
+      OnClick = btnEnviarClick
+      ExplicitLeft = 715
+    end
+  end
+  object dsCategorias: TDataSource
+    DataSet = DM.qryCategorias
+    Left = 72
+    Top = 72
+  end
+end

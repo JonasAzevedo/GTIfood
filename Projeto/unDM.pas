@@ -24,10 +24,8 @@ type
     FDConnection: TFDConnection;
     FDPhysFBDriverLink: TFDPhysFBDriverLink;
     DataSetListarMercado: TFDMemTable;
-    dsListarMercado: TDataSource;
     qryProdutos: TFDQuery;
     qryCategorias: TFDQuery;
-    ADRIFood_old: TADRIFood;
     qryInsert: TFDQuery;
     qryCategoriasCODIGO: TStringField;
     qryCategoriasDESCRICAO: TStringField;
@@ -35,6 +33,28 @@ type
     qryCategoriasINTEGRADO: TStringField;
     qryCategoriasENVIAR: TStringField;
     ADRIFood: TADRIFood;
+    qryProdutosENVIAR: TStringField;
+    qryProdutosCODIGO: TStringField;
+    qryProdutosDESCRICAO: TStringField;
+    qryProdutosSTATUS: TStringField;
+    qryProdutosSTATUS_DESC: TStringField;
+    qryProdutosTIPOPRODUTO: TStringField;
+    qryProdutosTIPOPRODUTO_DESC: TStringField;
+    qryProdutosCODIGO_GRUPO: TStringField;
+    qryProdutosGRUPO_DESC: TStringField;
+    qryProdutosCODIGO_SUBGRUPO: TStringField;
+    qryProdutosSUBGRUPO_DESC: TStringField;
+    qryProdutosPRECO_CUSTO: TFMTBCDField;
+    qryProdutosPRVENDA_IFOOD: TFMTBCDField;
+    qryProdutosPRODUTO_PARA_VENDA: TStringField;
+    qryProdutosPESO_PRODUTO: TFMTBCDField;
+    qryProdutosSKU: TStringField;
+    qryProdutosDESCRICAO_COMPLETA_PRODUTO: TBlobField;
+    qryProdutosDATA_ULTIMA_ATUALIZACAO: TSQLTimeStampField;
+    qryProdutosDESTAQUE: TIntegerField;
+    qryProdutosDESTAQUE_DESC: TStringField;
+    qryProdutosCODIGO_INTEGRACAO: TStringField;
+    qryProdutosINTEGRADO: TStringField;
     procedure qryCategoriasINTEGRADOGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
     procedure qryCategoriasENVIARGetText(Sender: TField; var Text: string;
@@ -44,6 +64,10 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure ADRIFoodLogResponse(ARequestId, AContent: string;
       AStatusCode: Integer; AUrl: string);
+    procedure qryProdutosENVIARGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure qryProdutosINTEGRADOGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
   private
     FMerchantId: string;
     FMerchantName: string;
@@ -164,6 +188,18 @@ begin
 end;
 
 procedure TDM.qryCategoriasINTEGRADOGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  Text := EmptyStr;
+end;
+
+procedure TDM.qryProdutosENVIARGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  Text := EmptyStr;
+end;
+
+procedure TDM.qryProdutosINTEGRADOGetText(Sender: TField; var Text: string;
   DisplayText: Boolean);
 begin
   Text := EmptyStr;

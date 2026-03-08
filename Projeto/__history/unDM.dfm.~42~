@@ -1,0 +1,179 @@
+object DM: TDM
+  OnCreate = DataModuleCreate
+  Height = 590
+  Width = 684
+  PixelsPerInch = 120
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'Database=C:\Jonas\GTIfood\Projeto\BD\estoque.fdb'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'Protocol=TCPIP'
+      'Server=127.0.0.1'
+      'Port=3050'
+      'DriverID=FB')
+    Connected = True
+    LoginPrompt = False
+    Left = 176
+    Top = 48
+  end
+  object FDPhysFBDriverLink: TFDPhysFBDriverLink
+    VendorHome = 'C:\Program Files (x86)\Firebird\Firebird_2_5\bin\'
+    VendorLib = 'fbclient.dll'
+    Left = 176
+    Top = 136
+  end
+  object DataSetListarMercado: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 360
+    Top = 48
+  end
+  object dsListarMercado: TDataSource
+    DataSet = DataSetListarMercado
+    Left = 353
+    Top = 136
+  end
+  object qryProdutos: TFDQuery
+    Active = True
+    Connection = FDConnection
+    SQL.Strings = (
+      'SELECT'
+      'M.cdmrc AS codigo,'
+      'M.descrmerc AS descricao,'
+      'M.status,'
+      'CASE M.status'
+      '  WHEN '#39'A'#39' THEN '#39'Ativo'#39
+      '  WHEN '#39'I'#39' then '#39'Inativo'#39
+      '  ELSE '#39#39
+      'END AS status_desc,'
+      'M.tipoproduto,'
+      'CASE M.tipoproduto'
+      '  WHEN '#39'P'#39' THEN '#39'Produto'#39
+      '  WHEN '#39'S'#39' then '#39'Servi'#231'o'#39
+      '  ELSE '#39#39
+      'END AS tipoproduto_desc,'
+      'M.cdgrupo AS codigo_grupo,'
+      'G.descrgrupo AS grupo_desc,'
+      'M.cdsgrup AS codigo_subgrupo,'
+      'SG.descrsgrupo AS subgrupo_desc,'
+      'M.custo AS preco_custo,'
+      'M.prvenda6 AS prvenda_ifood,'
+      'M.vendasn AS produto_para_venda,'
+      'M.pesoliq AS peso_produto,'
+      'M.cdmrc1 AS sku,'
+      'M.obs AS descricao_completa_produto,'
+      'M.dataua AS data_ultima_atualizacao,'
+      'M.destaque as destaque,'
+      'CASE M.destaque'
+      '  WHEN 0 THEN '#39'N'#227'o'#39
+      '  WHEN 1 then '#39'Sim'#39
+      '  ELSE '#39#39
+      'END AS destaque_desc'
+      'FROM mercad M'
+      'LEFT JOIN grupo G ON M.cdgrupo = G.cdgrupo'
+      'LEFT JOIN subgrupo SG ON M.cdsgrup = SG.cdsgrupo')
+    Left = 73
+    Top = 264
+  end
+  object qryCategorias: TFDQuery
+    CachedUpdates = True
+    Connection = FDConnection
+    SQL.Strings = (
+      'SELECT'
+      ' '#39'N'#39' AS enviar,'
+      '  G.cdgrupo AS codigo,'
+      '  G.descrgrupo AS descricao,'
+      '  ICI.codigo_integracao,'
+      '  CASE'
+      '    WHEN ICI.codigo_integracao IS NULL THEN '#39'N'#39
+      '    ELSE '#39'S'#39
+      '  END AS integrado'
+      'FROM grupo G'
+      
+        'LEFT JOIN integracao_categoria_ifood ICI ON G.cdgrupo = ICI.grup' +
+        'o')
+    Left = 73
+    Top = 353
+    object qryCategoriasENVIAR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ENVIAR'
+      Origin = 'ENVIAR'
+      ProviderFlags = []
+      OnGetText = qryCategoriasENVIARGetText
+      FixedChar = True
+      Size = 1
+    end
+    object qryCategoriasCODIGO: TStringField
+      FieldName = 'CODIGO'
+      Origin = 'CDGRUPO'
+      Required = True
+      Size = 3
+    end
+    object qryCategoriasDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRGRUPO'
+      Size = 60
+    end
+    object qryCategoriasCODIGO_INTEGRACAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CODIGO_INTEGRACAO'
+      Origin = 'CODIGO_INTEGRACAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 50
+    end
+    object qryCategoriasINTEGRADO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'INTEGRADO'
+      Origin = 'INTEGRADO'
+      ProviderFlags = []
+      OnGetText = qryCategoriasINTEGRADOGetText
+      FixedChar = True
+      Size = 1
+    end
+  end
+  object qryInsert: TFDQuery
+    Active = True
+    Connection = FDConnection
+    SQL.Strings = (
+      'SELECT'
+      '  G.cdgrupo AS codigo,'
+      '  G.descrgrupo AS descricao'
+      'FROM grupo G')
+    Left = 353
+    Top = 264
+  end
+  object ADRIFood: TADRIFood
+    APIType = atGroceries
+    Credentials.AuthorizationType = ctDistributed
+    Credentials.Centralizada.ClientId = '26f93824-8d3f-4727-a439-f75066180768'
+    Credentials.Centralizada.ClientSecret = 
+      'pnf27if0zek38mbx8v6r7lmo6i0u3hti678hi3eylouzoheen2xyjvnav986s1v5' +
+      'kqvk1v57ktzmxpmm4bp1b3m9phjdlnxm0b4'
+    Credentials.Distribuida.ClientId = '4e1c1484-610b-422f-99b3-f1cf7b5dc21e'
+    Credentials.Distribuida.ClientSecret = 
+      'smkl7zlftgoglvakyjyjl7ivlus845ad9dimr7gzwfj18ssxk5lm5ja63qjixitl' +
+      'a0j71yp3o20eyebz2jec1ew7azm4fe9cfad'
+    Log.SalvarLog = True
+    SoftwareHouse.Id = '73450162772'
+    SoftwareHouse.DiasAlerta = 30
+    Polling.AutoAck = True
+    Polling.AutoPolling = False
+    Polling.Interval = 30
+    Polling.InvokeEvents = True
+    MerchantStatus.AutoStatus = False
+    MerchantStatus.Interval = 30
+    Timeout = 60
+    OnLogResponse = ADRIFoodLogResponse
+    OnRefreshTokenSave = ADRIFoodRefreshTokenSave
+    OnRefreshTokenGet = ADRIFoodRefreshTokenGet
+    Left = 40
+    Top = 64
+  end
+end

@@ -246,3 +246,35 @@ Content:
 Request ID: ListMerchants_20260308153249
 URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
 Content: 
+============================
+Request ID: ListMerchants_20260308162020
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260308162231
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260308162338
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260308192415
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ListMerchants_20260308192532
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ItemV10PostItemIntegration_20260308192558
+URL: https://merchant-api.ifood.com.br/item/v1.0/ingestion/9211a726-cdaa-43b6-b14a-1e892e830d58?reset=false
+Content: [{"barcode":"99999","name":"DIVERSOS","plu":"1","active":true,"details":{"categorization":{"department":"1","category":"648e24c1-7016-4d4d-b53a-9a49f74f78ed","subCategory":"1"},"brand":"1","volume":"1","unit":"1","imageUrl":"1","description":"","nearExpiration":false},"prices":{"price":1.0},"inventory":{"stock":1.0},"multiple":{"originalEan":"1","quantity":1},"channels":["ifood-app"]}]
+============================
+Request ID: ListMerchants_20260308193328
+URL: https://merchant-api.ifood.com.br/merchant/v1.0/merchants
+Content: 
+============================
+Request ID: ItemV10PostItemIntegration_20260308193343
+URL: https://merchant-api.ifood.com.br/item/v1.0/ingestion/9211a726-cdaa-43b6-b14a-1e892e830d58?reset=false
+Content: [{"barcode":"99999","name":"DIVERSOS","plu":"1","active":true,"details":{"categorization":{"department":"1","category":"648e24c1-7016-4d4d-b53a-9a49f74f78ed","subCategory":"1"},"brand":"1","volume":"1","unit":"1","imageUrl":"1","description":"","nearExpiration":false},"prices":{"price":1.0},"inventory":{"stock":1.0},"multiple":{"originalEan":"1","quantity":1},"channels":["ifood-app"]}]

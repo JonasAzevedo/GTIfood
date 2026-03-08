@@ -1,0 +1,198 @@
+object frmProdutos: TfrmProdutos
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Produtos'
+  ClientHeight = 575
+  ClientWidth = 1216
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -20
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnShow = FormShow
+  TextHeight = 28
+  object grProdutos: TDBGrid
+    Left = 0
+    Top = 0
+    Width = 1216
+    Height = 521
+    Align = alClient
+    DataSource = dsProdutos
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -20
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    OnCellClick = grProdutosCellClick
+    OnColEnter = grProdutosColEnter
+    OnDrawColumnCell = grProdutosDrawColumnCell
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ENVIAR'
+        Width = 89
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'INTEGRADO'
+        Width = 119
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CODIGO'
+        Width = 77
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESCRICAO'
+        Width = 200
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'STATUS'
+        Width = 83
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'STATUS_DESC'
+        Width = 89
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'TIPOPRODUTO'
+        Width = 160
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'TIPOPRODUTO_DESC'
+        Width = 159
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CODIGO_GRUPO'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'GRUPO_DESC'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CODIGO_SUBGRUPO'
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SUBGRUPO_DESC'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRECO_CUSTO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRVENDA_IFOOD'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRODUTO_PARA_VENDA'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PESO_PRODUTO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SKU'
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESCRICAO_COMPLETA_PRODUTO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DATA_ULTIMA_ATUALIZACAO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESTAQUE'
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DESTAQUE_DESC'
+        Width = 64
+        Visible = True
+      end>
+  end
+  object pnlBotoes: TPanel
+    Left = 0
+    Top = 521
+    Width = 1216
+    Height = 54
+    Align = alBottom
+    TabOrder = 1
+    ExplicitTop = 337
+    ExplicitWidth = 883
+    object btnEnviar: TButton
+      Left = 1048
+      Top = 1
+      Width = 167
+      Height = 52
+      Align = alRight
+      Caption = 'Enviar'
+      TabOrder = 0
+      OnClick = btnEnviarClick
+      ExplicitLeft = 1049
+    end
+  end
+  object dsProdutos: TDataSource
+    DataSet = DM.qryProdutos
+    Left = 168
+    Top = 168
+  end
+  object DataSetItens: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 336
+    Top = 176
+  end
+end

@@ -1,0 +1,197 @@
+unit unProdutos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids, unDM,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TfrmProdutos = class(TForm)
+    grProdutos: TDBGrid;
+    dsProdutos: TDataSource;
+    DataSetItens: TFDMemTable;
+    pnlBotoes: TPanel;
+    btnEnviar: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure grProdutosDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure grProdutosCellClick(Column: TColumn);
+    procedure grProdutosColEnter(Sender: TObject);
+    procedure btnEnviarClick(Sender: TObject);
+  private
+    function PegarIds(ADataSet: TDataSet): string;
+    procedure AdicionarItensEnvio;
+  end;
+
+implementation
+
+uses
+  System.StrUtils, System.UITypes;
+
+{$R *.dfm}
+
+procedure TfrmProdutos.AdicionarItensEnvio;
+begin
+  DataSetItens.Append;
+  DataSetItens.FieldByName('Barcode').AsString := '99999';
+  DataSetItens.FieldByName('Name').AsString := DM.qryProdutos.FieldByName('DESCRICAO').AsString;
+//  DataSetItens.FieldByName('DetailsDescription').AsString := DM.qryProdutos.FieldByName('DESCRICAO_COMPLETA_PRODUTO').AsString;
+  DataSetItens.FieldByName('Plu').AsString := '1';
+  DataSetItens.FieldByName('Active').AsBoolean := True;
+
+  DataSetItens.FieldByName('DetailsVolume').AsString := '1';
+  DataSetItens.FieldByName('DetailsUnit').AsString := '1';
+  DataSetItens.FieldByName('DetailsCategorizationDepartment').AsString := '1';
+  DataSetItens.FieldByName('DetailsCategorizationCategory').AsString := 'edCategoria.Text'; //xxxxxxxxxx
+  DataSetItens.FieldByName('DetailsCategorizationSubCategory').AsString := '1';
+  DataSetItens.FieldByName('DetailsBrand').AsString := '1';
+  DataSetItens.FieldByName('InventoryStock').AsString := '1';
+  DataSetItens.FieldByName('PricesPrice').AsString := '1';
+  DataSetItens.FieldByName('MultipleQuantity').AsString := '1';
+  DataSetItens.FieldByName('DetailsImageUrl').AsString := '1';
+  DataSetItens.FieldByName('MultipleOriginalEan').AsString := '1';
+
+  DataSetItens.FieldByName('ChannelIFoodApp').AsBoolean := True;
+  DataSetItens.FieldByName('ChannelIFoodShop').AsBoolean := False;
+  DataSetItens.FieldByName('DetailsNearExpiration').AsBoolean := False;
+  DataSetItens.FieldByName('ChannelWhitelabel').AsBoolean := False;
+  DataSetItens.Post;
+end;
+
+function TfrmProdutos.PegarIds(ADataSet: TDataSet): string;
+var
+  SB: TStringBuilder;
+begin
+  SB := TStringBuilder.Create;
+  try
+    ADataSet.First;
+    while not ADataSet.Eof do
+    begin
+      if SB.Length > 0 then
+        SB.Append(',');
+
+      SB.Append(ADataSet.FieldByName('id').AsInteger);
+      ADataSet.Next;
+    end;
+
+    Result := SB.ToString;
+  finally
+    SB.Free;
+  end;
+end;
+
+procedure TfrmProdutos.FormCreate(Sender: TObject);
+begin
+  DM.ADRIFood.ItemV10.DataSet.ProductIngestion.CreateDataSet(DataSetItens);
+end;
+
+procedure TfrmProdutos.FormShow(Sender: TObject);
+begin
+  DM.qryProdutos.Close;
+  DM.qryProdutos.Open;
+end;
+
+procedure TfrmProdutos.grProdutosDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  lMarcar: word;
+  lRetangulo: TRect;
+begin
+  if MatchText(UpperCase(Column.FieldName), ['ENVIAR', 'INTEGRADO']) then
+  begin
+    grProdutos.Canvas.FillRect(Rect);
+
+    if Column.Field.AsString = 'S' then
+      lMarcar := DFCS_CHECKED
+    else
+      lMarcar := DFCS_BUTTONCHECK;
+
+    // ajusta o tamanho do CheckBox
+    lRetangulo := Rect;
+    InflateRect(lRetangulo, -2, -2);
+
+    // desenha o CheckBox conforme a condição acima
+    DrawFrameControl(grProdutos.Canvas.Handle, lRetangulo, DFC_BUTTON, lMarcar);
+  end;
+end;
+
+procedure TfrmProdutos.grProdutosCellClick(Column: TColumn);
+var
+  lColuna: string;
+  lValorColunaAtivo: string;
+begin
+  if MatchText(UpperCase(Column.FieldName), ['ENVIAR', 'INTEGRADO']) then
+  begin
+    lColuna := Column.FieldName;
+
+    if DM.qryProdutos.FieldByName(lColuna).AsString = 'S' then
+      lValorColunaAtivo := 'N'
+    else
+      lValorColunaAtivo := 'S';
+
+    DM.qryProdutos.Edit;
+    DM.qryProdutos.FieldByName(lColuna).AsString := lValorColunaAtivo;
+    DM.qryProdutos.Post;
+  end;
+end;
+
+procedure TfrmProdutos.grProdutosColEnter(Sender: TObject);
+begin
+  if MatchText(UpperCase(grProdutos.SelectedField.FieldName), ['ENVIAR', 'INTEGRADO']) then
+    grProdutos.Options := grProdutos.Options - [dgEditing]
+  else
+    grProdutos.Options := grProdutos.Options + [dgEditing];
+end;
+
+procedure TfrmProdutos.btnEnviarClick(Sender: TObject);
+var
+  lstJahIntegrados: TStringList;
+  lIdsIntegrou: string;
+begin
+  if DM.qryProdutos.IsEmpty then
+    Exit;
+
+  DataSetItens.EmptyDataSet;
+
+  lstJahIntegrados := TStringList.Create;
+  try
+    DM.qryProdutos.DisableControls;
+    DM.qryProdutos.First;
+    while not(DM.qryProdutos.Eof) do
+    begin
+      if   (DM.qryProdutos.FieldByName('enviar').AsString = 'S') then
+      begin
+        if (DM.qryProdutos.FieldByName('integrado').AsString = 'N') then
+          AdicionarItensEnvio
+        else
+          lstJahIntegrados.Add(DM.qryProdutos.FieldByName('codigo').AsString);
+      end;
+
+      DM.qryProdutos.Next;
+    end;
+
+    DM.ADRIFood.ItemV10.PostItemIntegration
+      .MerchantId(DM.MerchantId)
+      .Execute(DataSetItens, False);
+
+    lIdsIntegrou := PegarIds(DataSetItens);
+
+    MessageDlg('Produtos Enviados!' + sLineBreak + lIdsIntegrou, TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+  finally
+    DM.qryProdutos.First;
+
+    DM.qryProdutos.EnableControls;
+    if not(lstJahIntegrados.IsEmpty) then
+      MessageDlg('Itens já integrados: ' + lstJahIntegrados.CommaText,
+        TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+
+    FreeAndNil(lstJahIntegrados);
+  end;
+end;
+
+end.
